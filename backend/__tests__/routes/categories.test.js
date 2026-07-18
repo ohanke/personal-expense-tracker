@@ -70,6 +70,15 @@ describe('Categories Routes', () => {
       expect(response.status).toBe(200);
       expect(response.body).toEqual(mockCategories);
     });
+
+    it('should return empty list when user has no categories', async () => {
+      prisma.category.findMany.mockResolvedValue([]);
+
+      const response = await request(app).get('/api/categories?authenticated=true');
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([]);
+    });
   });
 
   describe('POST /api/categories', () => {

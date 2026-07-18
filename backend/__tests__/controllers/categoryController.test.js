@@ -41,6 +41,21 @@ describe('Category Controller', () => {
       expect(res.json).toHaveBeenCalledWith(mockCategories);
     });
 
+    it('should return empty list when user has no categories', async () => {
+      prisma.category.findMany.mockResolvedValue([]);
+
+      const req = { user: { id: 'user-123' } };
+      const res = { json: jest.fn() };
+
+      await getCategories(req, res);
+
+      expect(prisma.category.findMany).toHaveBeenCalledWith({
+        where: { user_id: 'user-123' },
+        orderBy: { created_at: 'asc' },
+      });
+      expect(res.json).toHaveBeenCalledWith([]);
+    });
+
     it('should handle errors gracefully', async () => {
       prisma.category.findMany.mockRejectedValue(new Error('DB error'));
 
