@@ -10,7 +10,9 @@
       "Bash(grep -E \"\\\\.js$|\\\\.ts$\")",
       "Bash(npm uninstall *)",
       "Bash(npm rebuild *)",
-      "Bash(grep -E \"\\\\.\\(js|env|json\\)$\")"
+      "Bash(grep -E \"\\\\.\\(js|env|json\\)$\")",
+      "Bash(npm cache *)",
+      "Bash(npm ls *)"
     ]
   }
 }
