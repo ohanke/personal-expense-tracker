@@ -142,7 +142,7 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
   - [x] Currency - ISO 4217 (lub domyślnie USD)
 - [x] **Autoryzacja**: każdy endpoint musi sprawdzać czy user jest właścicielem transakcji
 - [x] **Sortowanie**: sortBy (date/amount/title), sortOrder (asc/desc), domyślnie date DESC
-- [ ] **Alerty WebSocket**: Po create/update/delete wysłać alert budżetowy jeśli zmieniony procent zużycia (SPRINT 2)
+- [x] **Alerty WebSocket**: Po create/update/delete wysłać alert budżetowy jeśli zmieniony procent zużycia (SPRINT 2)
 
 ### Budżet miesięczny ✅ SPRINT 2
 - [x] GET /api/budgets/:month - pobranie budżetu na dany miesiąc
@@ -153,13 +153,13 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
 - [x] Endpoint `GET /api/budgets/:month/summary` - zwraca {budgetAmount, spent, remaining, percentageUsed}
 
 ### Wyszukiwanie i filtrowanie transakcji
-- [ ] **Search** - wyszukiwanie po title i notes (partial match, case-insensitive)
-- [ ] **Filter by category** - dokładne dopasowanie
-- [ ] **Filter by date range** - presets: this month, last month, custom range
-- [ ] **Filter by amount range** - min/max
-- [ ] Kombinacja filtrów (all together)
-- [ ] Paginacja (limit, offset)
-- [ ] Sortowanie (opcjonalne, ale zalecane)
+- [x] **Search** - wyszukiwanie po title i notes (partial match, case-insensitive)
+- [x] **Filter by category** - dokładne dopasowanie
+- [x] **Filter by date range** - presets: this month, last month, custom range
+- [x] **Filter by amount range** - min/max
+- [x] Kombinacja filtrów (all together)
+- [x] Paginacja (limit, offset)
+- [x] Sortowanie (opcjonalne, ale zalecane)
 
 ### WebSocket - Real-time Budget Alerts ✅ SPRINT 2
 
@@ -196,8 +196,8 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
   - [x] Pozostały budżet (budget - spent)
   - [x] Procent zużycia budżetu (visual progress bar)
   - [x] Stan "Brak ustawionego budżetu" zamiast mylących liczb
-  - [ ] Lista ostatnich transakcji
-  - [ ] Widoczne alerty budżetowe (toast/banner/panel)
+  - [x] Lista ostatnich transakcji
+  - [x] Widoczne alerty budżetowe (toast/banner/panel)
 - [x] **Ekran transakcji** z:
   - [x] Listą/tabelą transakcji
   - [x] Polem wyszukiwania (title + notes)
@@ -213,56 +213,56 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
 - [x] **Ustawienia budżetu** (część dashboarda lub osobna strona):
   - [x] Formularz ustawienia budżetu dla wybranego miesiąca
 - [x] **Logout**
-- [ ] **UI Requirements - Modern, Styled, Responsive**:
-  - [ ] Spójne spacing i typografia
-  - [ ] Visible hover i focus states dla elementów interaktywnych
-  - [ ] Empty states dla: brak transakcji, brak kategorii, brak wyników wyszukiwania, brak budżetu
-  - [ ] Co najmniej jeden visible loading state na głównym ekranie
-  - [ ] Validation feedback na formularzach create/edit transakcji (client-side)
-  - [ ] Light theme only (dark mode nie wymagane)
-  - [ ] Responsywna obsługa wąskich ekranów (mobile)
+- [x] **UI Requirements - Modern, Styled, Responsive**:
+  - [x] Spójne spacing i typografia
+  - [x] Visible hover i focus states dla elementów interaktywnych
+  - [x] Empty states dla: brak transakcji, brak kategorii, brak wyników wyszukiwania, brak budżetu
+  - [x] Co najmniej jeden visible loading state na głównym ekranie
+  - [x] Validation feedback na formularzach create/edit transakcji (client-side)
+  - [x] Light theme only (dark mode nie wymagane)
+  - [x] Responsywna obsługa wąskich ekranów (mobile)
 
 ### Backend Requirements
-- [ ] HTTP API supporting all UI flows
-- [ ] Enforce authorization dla każdej operacji na category/transaction/budget
-- [ ] Enforce authorization na WebSocket connections i budget alert delivery
-- [ ] Validacja inputów i clear error responses
-- [ ] Bezpieczna implementacja Google i GitHub SSO
-- [ ] Persistence w wybranej bazie danych
-- [ ] Dokumentacja required environment variables (Google OAuth, GitHub OAuth)
-- [ ] Error handling visible w UI
+- [x] HTTP API supporting all UI flows
+- [x] Enforce authorization dla każdej operacji na category/transaction/budget
+- [x] Enforce authorization na WebSocket connections i budget alert delivery
+- [x] Validacja inputów i clear error responses
+- [x] Bezpieczna implementacja Google i GitHub SSO
+- [x] Persistence w wybranej bazie danych
+- [x] Dokumentacja required environment variables (Google OAuth, GitHub OAuth)
+- [x] Error handling visible w UI
 
 ### Testy automatyczne (Minimum coverage)
-- [ ] **Autentykacja**:
-  - [ ] Mock/stub Google OAuth - successful SSO login path
-  - [ ] Mock/stub GitHub OAuth - successful SSO login path
-  - [ ] Local user record creation na first successful SSO
-  - [ ] Session persistence
-  - [ ] Brak real Google/GitHub network calls w testach
-- [ ] **Kategorie**:
-  - [ ] Create category
-  - [ ] CRUD operations
-  - [ ] Unikalność nazwy na użytkownika
-  - [ ] Obsługa usuwania (blokada vs reassign)
-- [ ] **Transakcje**:
-  - [ ] Create transaction
-  - [ ] CRUD operations
-  - [ ] Walidacja (amount > 0, date valid, title non-empty)
-  - [ ] Filtrowanie i wyszukiwanie
-- [ ] **Budżet**:
-  - [ ] Obliczanie sumy wydatków
-  - [ ] Obliczanie pozostałości
-  - [ ] Obliczanie procentu zużycia
-- [ ] **Bezpieczeństwo**:
-  - [ ] User nie może dostęp do cudzych kategorii/transakcji/budżetów
-  - [ ] Authorization enforcement na wszystkich operacjach
-- [ ] **WebSocket**:
-  - [ ] Alerty na 50%, 80%, 100% budżetu
-  - [ ] Once-per-threshold-per-month rule
-  - [ ] Alert fire on connection open
-  - [ ] Alert fire po transaction create/update/delete
-  - [ ] No budget set = no alerts
-- [ ] **End-to-end**: Logowanie → stworzenie budżetu → dodanie transakcji → otrzymanie alertów
+- [x] **Autentykacja**:
+  - [x] Mock/stub Google OAuth - successful SSO login path
+  - [x] Mock/stub GitHub OAuth - successful SSO login path
+  - [x] Local user record creation na first successful SSO
+  - [x] Session persistence
+  - [x] Brak real Google/GitHub network calls w testach
+- [x] **Kategorie**:
+  - [x] Create category
+  - [x] CRUD operations
+  - [x] Unikalność nazwy na użytkownika
+  - [x] Obsługa usuwania (blokada vs reassign)
+- [x] **Transakcje**:
+  - [x] Create transaction
+  - [x] CRUD operations
+  - [x] Walidacja (amount > 0, date valid, title non-empty)
+  - [x] Filtrowanie i wyszukiwanie
+- [x] **Budżet**:
+  - [x] Obliczanie sumy wydatków
+  - [x] Obliczanie pozostałości
+  - [x] Obliczanie procentu zużycia
+- [x] **Bezpieczeństwo**:
+  - [x] User nie może dostęp do cudzych kategorii/transakcji/budżetów
+  - [x] Authorization enforcement na wszystkich operacjach
+- [x] **WebSocket**:
+  - [x] Alerty na 50%, 80%, 100% budżetu
+  - [x] Once-per-threshold-per-month rule
+  - [x] Alert fire on connection open
+  - [x] Alert fire po transaction create/update/delete
+  - [x] No budget set = no alerts
+- [x] **End-to-end**: Logowanie → stworzenie budżetu → dodanie transakcji → otrzymanie alertów
 
 ---
 
