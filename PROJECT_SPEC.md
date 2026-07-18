@@ -181,10 +181,10 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
 - [x] Message wpłyna na zachowanie serwera (możliwość rozszerzenia do mark-as-read)
 - [x] **Format i semantyka udokumentowane w README**
 
-**UI (Client presentation)** ⏳:
-- [ ] Alerty budżetowe widoczne w UI
-- [ ] Akceptowalne formy: toast notifications, alert banner, notification panel
-- [ ] Client odbiera i wyświetla powiadomienia w real-time
+**UI (Client presentation)** ✅:
+- [x] Alerty budżetowe widoczne w UI
+- [x] Akceptowalne formy: toast notifications, alert banner, notification panel
+- [x] Client odbiera i wyświetla powiadomienia w real-time
 
 ### Frontend - UI i komponenty
 - [x] **Ekran logowania** z opcjami:

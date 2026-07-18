@@ -1,9 +1,11 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useWebSocket } from '../hooks/useWebSocket';
 
 export default function Layout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  useWebSocket();
 
   const handleLogout = async () => {
     await logout();
