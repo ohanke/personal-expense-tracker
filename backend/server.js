@@ -9,6 +9,7 @@ const categoryRoutes = require('./src/routes/categories');
 const transactionRoutes = require('./src/routes/transactions');
 const budgetRoutes = require('./src/routes/budgets');
 const { setupWebSocketServer } = require('./src/websocket/handler');
+const { logger } = require('./src/utils/logger');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -52,7 +53,10 @@ const server = http.createServer(app);
 setupWebSocketServer(server);
 
 server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  logger.info(`Server started on port ${PORT}`);
+  logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  logger.info('OAuth configured: Google + GitHub');
+  logger.info('WebSocket server ready for real-time budget alerts');
 });
 
 module.exports = app;

@@ -1,4 +1,5 @@
 const { prisma } = require('../utils/prisma');
+const { logger } = require('../utils/logger');
 
 const THRESHOLDS = [50, 80, 100];
 
@@ -98,13 +99,18 @@ const getAlertsToSend = async (userId, month, currentPercentageUsed) => {
 };
 
 const recordAlertSent = async (budgetId, userId, threshold) => {
-  await prisma.budgetAlert.create({
-    data: {
-      budget_id: budgetId,
-      user_id: userId,
-      threshold,
-    },
-  });
+  try {
+    await prisma.budgetAlert.create({
+      data: {
+        budget_id: budgetId,
+        user_id: userId,
+        threshold,
+      },
+    });
+    logger.debug('[BUDGET] Alert recorded', { userId, threshold });
+  } catch (error) {
+    logger.error('[BUDGET] Failed to record alert', error, { userId, threshold });
+  }
 };
 
 const handleClientMessage = async (message) => {
@@ -112,15 +118,17 @@ const handleClientMessage = async (message) => {
     const data = JSON.parse(message);
 
     if (data.type === 'acknowledge_alert') {
+      logger.debug('[WS] Client acknowledged alert');
       return {
         type: 'ack_received',
         message: 'Alert acknowledged',
       };
     }
 
+    logger.debug('[WS] Unknown message type', { type: data.type });
     return null;
   } catch (error) {
-    console.error('Error handling client message:', error);
+    logger.error('[WS] Error handling client message', error);
     return null;
   }
 };

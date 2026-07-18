@@ -1,5 +1,6 @@
 const WebSocket = require('ws');
 const { prisma } = require('../utils/prisma');
+const { logger } = require('../utils/logger');
 const {
   calculateBudgetSummary,
   getAlertsToSend,
@@ -37,10 +38,12 @@ const setupWebSocketServer = (server) => {
     const userId = request.session?.passport?.user || null;
 
     if (!userId) {
+      logger.warn('[WS] Connection rejected: no userId');
       ws.close(1008, 'Unauthorized');
       return;
     }
 
+    logger.websocket.connect(userId);
     wsClients.set(userId, ws);
 
     const currentMonth = getCurrentMonth();
@@ -58,6 +61,8 @@ const setupWebSocketServer = (server) => {
           month: currentMonth,
         }));
 
+        logger.websocket.alert(userId, alert.threshold, Math.round(alert.percentageUsed));
+
         const budget = await prisma.budget.findUnique({
           where: {
             user_id_month: {
@@ -71,22 +76,29 @@ const setupWebSocketServer = (server) => {
         }
       }
     } catch (error) {
-      console.error('Error sending initial alerts:', error);
+      logger.error('[WS] Error sending initial alerts', error, { userId });
     }
 
     ws.on('message', async (data) => {
-      const response = await handleClientMessage(data);
-      if (response) {
-        ws.send(JSON.stringify(response));
+      try {
+        const msg = JSON.parse(data);
+        logger.websocket.message(userId, msg.type || 'unknown');
+        const response = await handleClientMessage(data);
+        if (response) {
+          ws.send(JSON.stringify(response));
+        }
+      } catch {
+        logger.debug('[WS] Invalid message format');
       }
     });
 
     ws.on('close', () => {
+      logger.websocket.disconnect(userId);
       wsClients.delete(userId);
     });
 
     ws.on('error', (error) => {
-      console.error('WebSocket error:', error);
+      logger.websocket.error(userId, error);
       wsClients.delete(userId);
     });
   });
@@ -115,8 +127,11 @@ const sendBudgetAlert = async (userId, threshold, percentageUsed, month) => {
         month,
       }));
 
+      logger.websocket.alert(userId, threshold, Math.round(percentageUsed));
       await recordAlertSent(budget.id, userId, threshold);
     }
+  } else {
+    logger.debug('[WS] Client not connected', { userId });
   }
 };
 
