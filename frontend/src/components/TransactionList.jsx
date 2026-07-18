@@ -137,16 +137,16 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <h3 className="text-lg font-semibold text-gray-900">Transactions</h3>
 
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-700 text-sm">{error}</p>
+        <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+          <p className="text-red-700 text-sm font-medium">{error}</p>
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 bg-gray-50 p-4 rounded-lg">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
         <div>
           <label className="block text-xs font-medium text-gray-700 mb-1">Search</label>
           <input
@@ -154,7 +154,7 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Title or notes..."
-            className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
           />
         </div>
 
@@ -163,7 +163,7 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
           >
             <option value="">All categories</option>
             {categories.map((cat) => (
@@ -179,7 +179,7 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
           <select
             value={dateRange}
             onChange={(e) => setDateRange(e.target.value)}
-            className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
           >
             <option value="">All dates</option>
             <option value="this-month">This month</option>
@@ -195,20 +195,20 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
               value={customDateFrom}
               onChange={(e) => setCustomDateFrom(e.target.value)}
               placeholder="From"
-              className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
             />
             <input
               type="date"
               value={customDateTo}
               onChange={(e) => setCustomDateTo(e.target.value)}
               placeholder="To"
-              className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
             />
           </div>
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-gray-50 p-4 rounded-lg">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
         <div>
           <label className="block text-xs font-medium text-gray-700 mb-1">Min Amount</label>
           <input
@@ -217,7 +217,7 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
             value={amountMin}
             onChange={(e) => setAmountMin(e.target.value)}
             placeholder="0.00"
-            className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
           />
         </div>
         <div>
@@ -228,7 +228,7 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
             value={amountMax}
             onChange={(e) => setAmountMax(e.target.value)}
             placeholder="9999.99"
-            className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
           />
         </div>
       </div>
@@ -243,9 +243,9 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
         </div>
       ) : (
         <>
-          <div className="overflow-x-auto bg-white rounded-lg shadow">
+          <div className="overflow-x-auto bg-white rounded-xl shadow-sm border border-slate-100">
             <table className="w-full">
-              <thead className="bg-gray-100 border-b">
+              <thead className="bg-slate-50 border-b border-slate-100">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">Date</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">Title</th>
@@ -256,23 +256,23 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
               </thead>
               <tbody>
                 {transactions.map((tx) => (
-                  <tr key={tx.id} className="border-b hover:bg-gray-50">
+                  <tr key={tx.id} className="border-b border-slate-100 hover:bg-blue-50/50 transition-colors">
                     <td className="px-4 py-3 text-sm text-gray-900">{formatDate(tx.date)}</td>
-                    <td className="px-4 py-3 text-sm text-gray-900">{tx.title}</td>
+                    <td className="px-4 py-3 text-sm font-medium text-gray-900">{tx.title}</td>
                     <td className="px-4 py-3 text-sm text-gray-600">{getCategoryName(tx.category_id)}</td>
                     <td className="px-4 py-3 text-sm text-right font-semibold text-gray-900">
                       {formatCurrency(tx.amount)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-center">
+                    <td className="px-4 py-3 text-sm text-center space-x-1">
                       <button
                         onClick={() => onEdit(tx)}
-                        className="inline-block px-2 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700 mr-2"
+                        className="inline-block px-3 py-1 bg-blue-600 text-white rounded-md text-xs hover:bg-blue-700 transition-colors"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(tx.id)}
-                        className="inline-block px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700"
+                        className="inline-block px-3 py-1 bg-red-600 text-white rounded-md text-xs hover:bg-red-700 transition-colors"
                       >
                         Delete
                       </button>
@@ -283,11 +283,11 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
             </table>
           </div>
 
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center pt-2">
             <button
               onClick={handlePrevious}
               disabled={offset === 0}
-              className="px-4 py-2 bg-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-400 transition-colors disabled:bg-gray-200 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-slate-200 text-gray-900 rounded-lg font-medium hover:bg-slate-300 transition-colors disabled:bg-slate-100 disabled:text-gray-400 disabled:cursor-not-allowed"
             >
               ← Previous
             </button>
@@ -297,7 +297,7 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
             <button
               onClick={handleNext}
               disabled={!hasMore}
-              className="px-4 py-2 bg-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-400 transition-colors disabled:bg-gray-200 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-slate-200 text-gray-900 rounded-lg font-medium hover:bg-slate-300 transition-colors disabled:bg-slate-100 disabled:text-gray-400 disabled:cursor-not-allowed"
             >
               Next →
             </button>
