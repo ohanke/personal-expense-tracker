@@ -1,0 +1,289 @@
+# Personal Expense Tracker - Project Specification
+
+## Cel projektu
+
+**MVP aplikacji "Personal Expense Tracker"** - lokalne uruchomienie, przeznaczona do śledżenia wydatków osobistych.
+
+- Każdy użytkownik widzi **wyłącznie swoje dane**
+- Brak współdzielenia danych między użytkownikami
+- Wsparcie dla wielu użytkowników w jednej instancji
+- Automatyczne powiadomienia o przekroczeniu budżetu
+
+---
+
+## Stos technologiczny
+
+### Backend
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **ORM**: Prisma
+- **Baza danych**: SQLite
+- **Autentykacja**: Passport.js (Google & GitHub SSO)
+- **Komunikacja real-time**: WebSocket (Socket.io lub ws)
+
+### Frontend
+- **Framework**: React
+- **Bundler**: Vite
+- **Styling**: Tailwind CSS
+- **Komponenty**: shadcn/ui
+- **Komunikacja**: WebSocket client
+
+### Struktura katalogów
+```
+.
+├── backend/
+│   ├── prisma/
+│   │   ├── schema.prisma
+│   │   └── migrations/
+│   ├── src/
+│   │   ├── routes/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   └── websocket/
+│   ├── .env
+│   ├── package.json
+│   └── server.js
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── hooks/
+│   │   └── services/
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   └── package.json
+├── PROJECT_SPEC.md
+└── README.md
+```
+
+---
+
+## Wymagania funkcjonalne
+
+### Baza danych i modele
+- [x] Inicjalizacja bazy danych SQLite + Prisma
+- [x] Model **User** (provider, provider_user_id, email, display_name, avatar_url)
+- [x] Model **Category** (name, user_id - unikalne na użytkownika)
+- [x] Model **Transaction** (title, amount, currency, date, notes, user_id, category_id)
+- [x] Model **Budget** (amount, month, user_id - jeden budżet na miesiąc)
+- [x] Kaskadowne usuwanie (user → cascade delete)
+
+### Autentykacja (OAuth) - SSO Only
+- [ ] Integracja Passport.js z Google OAuth / OpenID Connect
+- [ ] Integracja Passport.js z GitHub OAuth
+- [ ] Support dla logowania - Google i GitHub
+- [ ] Support dla wylogowania
+- [ ] Autentykacja persystuje across page refresh (sesja/token)
+- [ ] Tworzenie lokalnego rekordu User przy pierwszym logowaniu
+- [ ] Przechowywanie minimum: provider, provider_user_id, email (jeśli dostępny), display_name, avatar_url (optional)
+- [ ] Obsługa sesji użytkownika
+- [ ] Middleware autoryzacji (sprawdzenie czy user jest zalogowany)
+- [ ] Account linking między Google i GitHub nie jest wymagane (mogą być oddzielne konta)
+- [ ] Bezpieczna implementacja Google i GitHub SSO
+
+### CRUD Kategorii
+- [ ] GET /api/categories - lista kategorii użytkownika
+- [ ] POST /api/categories - utworzenie nowej kategorii
+- [ ] PUT /api/categories/:id - rename kategorii (edycja nazwy)
+- [ ] DELETE /api/categories/:id - usunięcie kategorii
+  - **Reguła**: Blokada usunięcia jeśli istnieją powiązane transakcje, LUB przypisanie istniejących transakcji do kategorii "Uncategorized/Bez kategorii"
+  - Wybrana reguła musi być **udokumentowana w README**
+- [ ] Walidacja: nazwa unikalna na użytkownika
+- [ ] Autoryzacja: każdy endpoint musi sprawdzać czy user jest właścicielem kategorii
+
+### CRUD Transakcji
+- [ ] GET /api/transactions - lista transakcji użytkownika (z paginacją)
+- [ ] GET /api/transactions?search=&category=&dateFrom=&dateTo=&amountMin=&amountMax= - wyszukiwanie i filtrowanie
+- [ ] POST /api/transactions - utworzenie transakcji
+- [ ] PUT /api/transactions/:id - edycja transakcji (wszystkie pola)
+- [ ] DELETE /api/transactions/:id - usunięcie transakcji
+- [ ] **Walidacja**:
+  - [ ] Amount > 0
+  - [ ] Transaction date - valid date (nie w przyszłości)
+  - [ ] Title - non-empty
+  - [ ] Currency - ISO 4217 (lub domyślnie USD)
+- [ ] **Autoryzacja**: każdy endpoint musi sprawdzać czy user jest właścicielem transakcji
+- [ ] **Alerty WebSocket**: Po create/update/delete wysłać alert budżetowy jeśli zmieniony procent zużycia
+
+### Budżet miesięczny
+- [ ] GET /api/budgets/:month - pobranie budżetu na dany miesiąc
+- [ ] POST /api/budgets - ustawienie budżetu (lub aktualizacja istniejącego)
+- [ ] Obliczanie sumy wydatków w miesiącu
+- [ ] Obliczanie pozostałego budżetu (amount - suma wydatków)
+- [ ] Obliczanie procentu zużycia (suma wydatków / amount * 100)
+- [ ] Endpoint `GET /api/budgets/:month/summary` - zwraca {budgetAmount, spent, remaining, percentageUsed}
+
+### Wyszukiwanie i filtrowanie transakcji
+- [ ] **Search** - wyszukiwanie po title i notes (partial match, case-insensitive)
+- [ ] **Filter by category** - dokładne dopasowanie
+- [ ] **Filter by date range** - presets: this month, last month, custom range
+- [ ] **Filter by amount range** - min/max
+- [ ] Kombinacja filtrów (all together)
+- [ ] Paginacja (limit, offset)
+- [ ] Sortowanie (opcjonalne, ale zalecane)
+
+### WebSocket - Real-time Budget Alerts
+
+**Server → Client (Backend pushes alerts)**:
+- [ ] Backend wysyła alerty budżetowe **dla bieżącego miesiąca kalendarzowego tylko**
+- [ ] **Progi alertów**:
+  - [ ] 50% zużycia budżetu
+  - [ ] 80% zużycia budżetu
+  - [ ] 100% zużycia budżetu
+- [ ] **Reguła**: Alert wysyłany **raz na próg na miesiąc** (nie spam)
+- [ ] Alerty generowane:
+  - [ ] Gdy WebSocket connection się otworzy (jeśli budżet ustawiony)
+  - [ ] Po create/update/delete transakcji (jeśli budżet ustawiony dla bieżącego miesiąca)
+- [ ] Jeśli nie ustawiony budżet dla bieżącego miesiąca: **brak alertów**
+- [ ] Autoryzacja: sprawdzenie czy user jest właścicielem budżetu
+
+**Client → Server (Client sends meaningful messages)**:
+- [ ] Client wysyła co najmniej jeden message do serwera (np. Subscribe, Ack)
+- [ ] Message musi **wpłynąć na zachowanie serwera** (np. subscription do alertów, acknowledge alert)
+- [ ] **Format i semantyka muszą być udokumentowane w README**
+
+**UI (Client presentation)**:
+- [ ] Alerty budżetowe widoczne w UI
+- [ ] Akceptowalne formy: toast notifications, alert banner, notification panel
+- [ ] Client odbiera i wyświetla powiadomienia w real-time
+
+### Frontend - UI i komponenty
+- [ ] **Ekran logowania** z opcjami:
+  - [ ] Continue with Google
+  - [ ] Continue with GitHub
+- [ ] **Dashboard główny** (po zalogowaniu) - pokazuje wybrany miesiąc:
+  - [ ] Całkowita suma wydatków w miesiącu
+  - [ ] Kwota budżetu miesięcznego
+  - [ ] Pozostały budżet (budget - spent)
+  - [ ] Procent zużycia budżetu (visual progress bar)
+  - [ ] Stan "Brak ustawionego budżetu" zamiast mylących liczb
+  - [ ] Lista ostatnich transakcji
+  - [ ] Widoczne alerty budżetowe (toast/banner/panel)
+- [ ] **Ekran transakcji** z:
+  - [ ] Listą/tabelą transakcji
+  - [ ] Polem wyszukiwania (title + notes)
+  - [ ] Filtrami: kategoria, zakres dat (ten miesiąc, ostatni miesiąc, custom), zakres kwot
+  - [ ] UI do tworzenia/edycji (modal, drawer lub osobna strona)
+  - [ ] Przycisk usuwania z potwierdzeniem
+  - [ ] Responsywność: tabela→karty na mobile, poziomy scroll jest OK
+- [ ] **Zarządzanie kategoriami** (strona lub modal):
+  - [ ] Lista kategorii
+  - [ ] Dodawanie nowej kategorii
+  - [ ] Edycja nazwy kategorii
+  - [ ] Usunięcie kategorii (ze sprawdzeniem transakcji)
+- [ ] **Ustawienia budżetu** (część dashboarda lub osobna strona):
+  - [ ] Formularz ustawienia budżetu dla wybranego miesiąca
+- [ ] **Logout**
+- [ ] **UI Requirements - Modern, Styled, Responsive**:
+  - [ ] Spójne spacing i typografia
+  - [ ] Visible hover i focus states dla elementów interaktywnych
+  - [ ] Empty states dla: brak transakcji, brak kategorii, brak wyników wyszukiwania, brak budżetu
+  - [ ] Co najmniej jeden visible loading state na głównym ekranie
+  - [ ] Validation feedback na formularzach create/edit transakcji (client-side)
+  - [ ] Light theme only (dark mode nie wymagane)
+  - [ ] Responsywna obsługa wąskich ekranów (mobile)
+
+### Backend Requirements
+- [ ] HTTP API supporting all UI flows
+- [ ] Enforce authorization dla każdej operacji na category/transaction/budget
+- [ ] Enforce authorization na WebSocket connections i budget alert delivery
+- [ ] Validacja inputów i clear error responses
+- [ ] Bezpieczna implementacja Google i GitHub SSO
+- [ ] Persistence w wybranej bazie danych
+- [ ] Dokumentacja required environment variables (Google OAuth, GitHub OAuth)
+- [ ] Error handling visible w UI
+
+### Testy automatyczne (Minimum coverage)
+- [ ] **Autentykacja**:
+  - [ ] Mock/stub Google OAuth - successful SSO login path
+  - [ ] Mock/stub GitHub OAuth - successful SSO login path
+  - [ ] Local user record creation na first successful SSO
+  - [ ] Session persistence
+  - [ ] Brak real Google/GitHub network calls w testach
+- [ ] **Kategorie**:
+  - [ ] Create category
+  - [ ] CRUD operations
+  - [ ] Unikalność nazwy na użytkownika
+  - [ ] Obsługa usuwania (blokada vs reassign)
+- [ ] **Transakcje**:
+  - [ ] Create transaction
+  - [ ] CRUD operations
+  - [ ] Walidacja (amount > 0, date valid, title non-empty)
+  - [ ] Filtrowanie i wyszukiwanie
+- [ ] **Budżet**:
+  - [ ] Obliczanie sumy wydatków
+  - [ ] Obliczanie pozostałości
+  - [ ] Obliczanie procentu zużycia
+- [ ] **Bezpieczeństwo**:
+  - [ ] User nie może dostęp do cudzych kategorii/transakcji/budżetów
+  - [ ] Authorization enforcement na wszystkich operacjach
+- [ ] **WebSocket**:
+  - [ ] Alerty na 50%, 80%, 100% budżetu
+  - [ ] Once-per-threshold-per-month rule
+  - [ ] Alert fire on connection open
+  - [ ] Alert fire po transaction create/update/delete
+  - [ ] No budget set = no alerts
+- [ ] **End-to-end**: Logowanie → stworzenie budżetu → dodanie transakcji → otrzymanie alertów
+
+---
+
+## Uwagi implementacyjne
+
+1. **Izolacja danych**: Każdy endpoint musi sprawdzać czy zalogowany user jest właścicielem danych (middleware autoryzacji)
+2. **Waluta**: Domyślnie USD, ale transakcje mogą być w różnych walutach (ISO 4217)
+3. **Miesiąc**: Format `YYYY-MM` (np. "2026-07")
+4. **Kategoria usuwania**: Reguła musi być udokumentowana (blokada vs reassign)
+5. **WebSocket**: Dwukierunkowa komunikacja - server → client (alerty), client → server (subscribe/ack)
+6. **WebSocket - Alert Rule**: Once per threshold per month - jeśli user edit/delete transakcji, alert nie powinien się spamować
+7. **Email**: GitHub może nie zawsze podać email, dlatego identity powinno bazować na provider + provider_user_id
+8. **Frontend routing**: React Router v6+
+9. **State management**: React Context API lub zustand
+10. **Error handling**: Validacja inputów, clear error responses na API
+11. **Local run**: Projekt musi działać lokalnie z dokumentowanymi komendami
+
+---
+
+## README - Obowiązkowe sekcje
+
+Dokumentacja musi zawierać:
+- [ ] How to run backend locally (komendy)
+- [ ] How to run frontend locally (komendy)
+- [ ] How to run tests (komendy)
+- [ ] Short description of API
+- [ ] Explanation of category deletion behavior (blokada vs reassign)
+- [ ] How to configure Google OAuth credentials
+- [ ] How to configure GitHub OAuth credentials
+- [ ] WebSocket message format (client → server)
+- [ ] WebSocket budget alert rules
+- [ ] Required environment variables (.env)
+
+---
+
+## Optional deliverables
+
+- [ ] Containerization via Dockerfile i/lub docker-compose
+- [ ] Jeśli containerization nie będzie możliwy, musi być nota w README
+
+---
+
+## Acceptance Checklist (Final verification)
+
+- [ ] User może zalogować się z Google i GitHub
+- [ ] Local user record tworzony automatically na first successful SSO
+- [ ] User może tworzyć kategorie i transakcje
+- [ ] User może ustawić monthly budget i zobaczyć totals, remaining, usage %
+- [ ] User może wyszukiwać i filtrować transakcje
+- [ ] Dane są private per user (bez cross-account access)
+- [ ] While connected, app otrzymuje real-time budget alerts (50%, 80%, 100% dla bieżącego miesiąca)
+- [ ] WebSocket flow includes client → server message (zmieniające server behavior)
+- [ ] App runs locally z README instructions
+- [ ] Tests pass locally
+
+---
+
+## Timeline i priorytet
+
+- **Sprint 1 (P0)**: Baza danych ✅ + OAuth + CRUD Kategorii i Transakcji
+- **Sprint 2 (P0)**: Budżet, Filtrowanie, WebSocket alerty
+- **Sprint 3 (P1)**: Frontend Dashboard, zarządzanie transakcjami
+- **Sprint 4 (P2)**: Testy automatyczne, deployment
