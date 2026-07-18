@@ -12,7 +12,8 @@
       "Bash(npm rebuild *)",
       "Bash(grep -E \"\\\\.\\(js|env|json\\)$\")",
       "Bash(npm cache *)",
-      "Bash(npm ls *)"
+      "Bash(npm ls *)",
+      "Bash(npm test *)"
     ]
   }
 }
