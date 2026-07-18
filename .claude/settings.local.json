@@ -13,7 +13,12 @@
       "Bash(grep -E \"\\\\.\\(js|env|json\\)$\")",
       "Bash(npm cache *)",
       "Bash(npm ls *)",
-      "Bash(npm test *)"
+      "Bash(npm test *)",
+      "Bash(npm create *)",
+      "Bash(npx tailwindcss *)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(kill %1)"
     ]
   }
 }
