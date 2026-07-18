@@ -13,11 +13,11 @@ export default function Layout() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <div className="min-h-screen bg-slate-50">
+      <header className="bg-white border-b border-slate-200 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Personal Expense Tracker</h1>
+            <h1 className="text-2xl font-bold text-slate-900">Personal Expense Tracker</h1>
           </div>
           <div className="flex items-center gap-4">
             {user && (
@@ -26,11 +26,11 @@ export default function Layout() {
                   <img
                     src={user.avatar_url}
                     alt={user.display_name || user.email}
-                    className="w-10 h-10 rounded-full"
+                    className="w-10 h-10 rounded-full border border-slate-200"
                   />
                 )}
                 <div>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-sm font-medium text-slate-900">
                     {user.display_name || user.email}
                   </p>
                 </div>
@@ -38,7 +38,7 @@ export default function Layout() {
             )}
             <button
               onClick={handleLogout}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              className="px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg font-medium hover:bg-slate-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               Wyloguj się
             </button>
@@ -46,7 +46,7 @@ export default function Layout() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Outlet />
       </main>
     </div>

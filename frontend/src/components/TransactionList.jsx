@@ -137,33 +137,33 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
   };
 
   return (
-    <div className="space-y-5">
-      <h3 className="text-lg font-semibold text-gray-900">Transactions</h3>
+    <div className="space-y-4">
+      <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wide">Transactions</h3>
 
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
           <p className="text-red-700 text-sm font-medium">{error}</p>
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 bg-white p-4 rounded-lg border border-slate-200">
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Search</label>
+          <label className="block text-xs font-medium text-slate-700 mb-1">Search</label>
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Title or notes..."
-            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-slate-400 transition-colors"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Category</label>
+          <label className="block text-xs font-medium text-slate-700 mb-1">Category</label>
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-slate-400 transition-colors"
           >
             <option value="">All categories</option>
             {categories.map((cat) => (
@@ -175,11 +175,11 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Date Range</label>
+          <label className="block text-xs font-medium text-slate-700 mb-1">Date Range</label>
           <select
             value={dateRange}
             onChange={(e) => setDateRange(e.target.value)}
-            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-slate-400 transition-colors"
           >
             <option value="">All dates</option>
             <option value="this-month">This month</option>
@@ -195,40 +195,40 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
               value={customDateFrom}
               onChange={(e) => setCustomDateFrom(e.target.value)}
               placeholder="From"
-              className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
+              className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-slate-400 transition-colors"
             />
             <input
               type="date"
               value={customDateTo}
               onChange={(e) => setCustomDateTo(e.target.value)}
               placeholder="To"
-              className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
+              className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-slate-400 transition-colors"
             />
           </div>
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white p-4 rounded-lg border border-slate-200">
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Min Amount</label>
+          <label className="block text-xs font-medium text-slate-700 mb-1">Min Amount</label>
           <input
             type="number"
             step="0.01"
             value={amountMin}
             onChange={(e) => setAmountMin(e.target.value)}
             placeholder="0.00"
-            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-slate-400 transition-colors"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Max Amount</label>
+          <label className="block text-xs font-medium text-slate-700 mb-1">Max Amount</label>
           <input
             type="number"
             step="0.01"
             value={amountMax}
             onChange={(e) => setAmountMax(e.target.value)}
             placeholder="9999.99"
-            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-slate-400 transition-colors"
           />
         </div>
       </div>
@@ -243,36 +243,36 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
         </div>
       ) : (
         <>
-          <div className="overflow-x-auto bg-white rounded-xl shadow-sm border border-slate-100">
+          <div className="overflow-x-auto bg-white rounded-lg shadow-sm border border-slate-200">
             <table className="w-full">
-              <thead className="bg-slate-50 border-b border-slate-100">
+              <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">Title</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">Category</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold text-gray-700">Amount</th>
-                  <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">Actions</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-700">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-700">Title</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-700">Category</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold text-slate-700">Amount</th>
+                  <th className="px-4 py-3 text-center text-xs font-semibold text-slate-700">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {transactions.map((tx) => (
-                  <tr key={tx.id} className="border-b border-slate-100 hover:bg-blue-50/50 transition-colors">
-                    <td className="px-4 py-3 text-sm text-gray-900">{formatDate(tx.date)}</td>
-                    <td className="px-4 py-3 text-sm font-medium text-gray-900">{tx.title}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{getCategoryName(tx.category_id)}</td>
-                    <td className="px-4 py-3 text-sm text-right font-semibold text-gray-900">
+                  <tr key={tx.id} className="border-b border-slate-200 hover:bg-slate-50/50 transition-colors">
+                    <td className="px-4 py-3 text-sm text-slate-900">{formatDate(tx.date)}</td>
+                    <td className="px-4 py-3 text-sm font-medium text-slate-900">{tx.title}</td>
+                    <td className="px-4 py-3 text-sm text-slate-600">{getCategoryName(tx.category_id)}</td>
+                    <td className="px-4 py-3 text-sm text-right font-semibold text-slate-900">
                       {formatCurrency(tx.amount)}
                     </td>
                     <td className="px-4 py-3 text-sm text-center space-x-1">
                       <button
                         onClick={() => onEdit(tx)}
-                        className="inline-block px-3 py-1 bg-blue-600 text-white rounded-md text-xs hover:bg-blue-700 transition-colors"
+                        className="inline-block px-3 py-1 bg-indigo-600 text-white rounded text-xs hover:bg-indigo-700 transition-colors"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(tx.id)}
-                        className="inline-block px-3 py-1 bg-red-600 text-white rounded-md text-xs hover:bg-red-700 transition-colors"
+                        className="inline-block px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition-colors"
                       >
                         Delete
                       </button>
@@ -283,21 +283,21 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
             </table>
           </div>
 
-          <div className="flex justify-between items-center pt-2">
+          <div className="flex justify-between items-center">
             <button
               onClick={handlePrevious}
               disabled={offset === 0}
-              className="px-4 py-2 bg-slate-200 text-gray-900 rounded-lg font-medium hover:bg-slate-300 transition-colors disabled:bg-slate-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors disabled:bg-slate-50 disabled:text-slate-400 disabled:border-slate-200 disabled:cursor-not-allowed"
             >
               ← Previous
             </button>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-slate-600">
               Showing {offset + 1}–{offset + transactions.length}
             </span>
             <button
               onClick={handleNext}
               disabled={!hasMore}
-              className="px-4 py-2 bg-slate-200 text-gray-900 rounded-lg font-medium hover:bg-slate-300 transition-colors disabled:bg-slate-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors disabled:bg-slate-50 disabled:text-slate-400 disabled:border-slate-200 disabled:cursor-not-allowed"
             >
               Next →
             </button>

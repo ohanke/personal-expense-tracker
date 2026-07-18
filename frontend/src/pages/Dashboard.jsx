@@ -99,26 +99,26 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
           <p className="text-red-700 text-sm font-medium">{error}</p>
         </div>
       )}
 
-      <div className="flex items-center justify-center gap-4 py-4">
+      <div className="flex items-center justify-center gap-3">
         <button
           onClick={handlePreviousMonth}
-          className="px-4 py-2 bg-white border-2 border-slate-200 rounded-lg hover:border-slate-300 hover:shadow transition-all text-gray-700 font-medium"
+          className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors duration-200"
         >
           ← Previous
         </button>
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent min-w-56 text-center">
+        <h2 className="text-2xl font-semibold text-slate-900 min-w-48 text-center">
           {formatMonth(currentMonth)}
         </h2>
         <button
           onClick={handleNextMonth}
-          className="px-4 py-2 bg-white border-2 border-slate-200 rounded-lg hover:border-slate-300 hover:shadow transition-all text-gray-700 font-medium"
+          className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors duration-200"
         >
           Next →
         </button>
@@ -130,36 +130,36 @@ export default function Dashboard() {
         </div>
       ) : budgetData && budgetData.budgetAmount ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 hover:shadow-md transition-shadow">
-            <div className="grid grid-cols-2 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
-                <p className="text-slate-600 text-sm font-medium tracking-wide">Spent</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">
+                <p className="text-slate-600 text-xs font-medium uppercase tracking-wide">Spent</p>
+                <p className="text-2xl font-bold text-slate-900 mt-1">
                   {formatCurrency(budgetData.spent)}
                 </p>
               </div>
               <div>
-                <p className="text-slate-600 text-sm font-medium tracking-wide">Budget</p>
-                <p className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mt-1">
+                <p className="text-slate-600 text-xs font-medium uppercase tracking-wide">Budget</p>
+                <p className="text-2xl font-bold text-indigo-600 mt-1">
                   {formatCurrency(budgetData.budgetAmount)}
                 </p>
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 mb-6 pb-6 border-b border-slate-200">
               <div className="flex justify-between items-center">
                 <p className="text-slate-600 text-sm font-medium">Budget Usage</p>
-                <p className="text-gray-900 font-bold text-lg">
+                <p className="text-slate-900 font-semibold">
                   {budgetData.percentageUsed.toFixed(1)}%
                 </p>
               </div>
-              <div className="w-full bg-slate-200 rounded-full h-2.5">
+              <div className="w-full bg-slate-200 rounded-full h-2">
                 <div
-                  className={`h-2.5 rounded-full transition-all ${
+                  className={`h-2 rounded-full transition-all ${
                     budgetData.percentageUsed < 50
                       ? 'bg-green-500'
                       : budgetData.percentageUsed < 80
-                      ? 'bg-amber-500'
+                      ? 'bg-yellow-500'
                       : budgetData.percentageUsed < 100
                       ? 'bg-orange-500'
                       : 'bg-red-500'
@@ -169,10 +169,10 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="mt-8 pt-8 border-t border-slate-100">
-              <p className="text-slate-600 text-sm font-medium tracking-wide mb-2">Remaining</p>
+            <div>
+              <p className="text-slate-600 text-xs font-medium uppercase tracking-wide mb-1">Remaining</p>
               <p
-                className={`text-4xl font-bold ${
+                className={`text-2xl font-bold ${
                   budgetData.remaining >= 0 ? 'text-green-600' : 'text-red-600'
                 }`}
               >
@@ -181,12 +181,12 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 hover:shadow-md transition-shadow">
-            <h3 className="text-lg font-semibold text-gray-900 mb-6">Budget Settings</h3>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h3 className="text-sm font-semibold text-slate-900 mb-4 uppercase tracking-wide">Budget Settings</h3>
             {showBudgetForm ? (
               <form onSubmit={handleSetBudget} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Monthly Budget Amount (USD)
                   </label>
                   <input
@@ -196,14 +196,14 @@ export default function Dashboard() {
                     value={formAmount}
                     onChange={(e) => setFormAmount(e.target.value)}
                     placeholder="Enter amount"
-                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-slate-300 transition-colors"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-slate-400 transition-colors"
                     autoFocus
                   />
                 </div>
                 <div className="flex gap-2">
                   <button
                     type="submit"
-                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                    className="flex-1 px-3 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
                   >
                     Save
                   </button>
@@ -213,7 +213,7 @@ export default function Dashboard() {
                       setShowBudgetForm(false);
                       setFormAmount('');
                     }}
-                    className="flex-1 px-4 py-2 bg-slate-200 text-gray-900 rounded-lg font-medium hover:bg-slate-300 transition-colors"
+                    className="flex-1 px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors"
                   >
                     Cancel
                   </button>
@@ -222,7 +222,7 @@ export default function Dashboard() {
             ) : (
               <button
                 onClick={() => setShowBudgetForm(true)}
-                className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors shadow-sm"
               >
                 Update Budget
               </button>
@@ -230,9 +230,9 @@ export default function Dashboard() {
           </div>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-12 text-center">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
           <svg
-            className="mx-auto h-16 w-16 text-blue-300 mb-4"
+            className="mx-auto h-12 w-12 text-slate-300 mb-4"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -244,35 +244,35 @@ export default function Dashboard() {
               d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          <h3 className="text-lg font-semibold text-slate-900 mb-2">
             No Budget Set for {formatMonth(currentMonth)}
           </h3>
-          <p className="text-gray-600 mb-8">
+          <p className="text-slate-600 mb-6">
             Set up a budget to start tracking your expenses and receiving alerts.
           </p>
           <button
             onClick={() => setShowBudgetForm(true)}
-            className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors inline-block"
+            className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors shadow-sm inline-block"
           >
             Set Budget Now
           </button>
         </div>
       )}
 
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-        <div className="flex flex-wrap gap-3 mb-6">
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="flex flex-wrap gap-2 mb-6">
           <button
             onClick={() => {
               setEditingTransaction(null);
               setShowTransactionForm(true);
             }}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors shadow-sm"
           >
             + Add Transaction
           </button>
           <button
             onClick={() => setShowCategoriesManager(true)}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+            className="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors"
           >
             Manage Categories
           </button>
