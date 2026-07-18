@@ -1,5 +1,12 @@
 const { prisma } = require('../utils/prisma');
 
+let webSocketHandler = null;
+try {
+  webSocketHandler = require('../websocket/handler');
+} catch (error) {
+  console.warn('WebSocket handler not available (testing environment)');
+}
+
 const ISO_4217_CURRENCIES = new Set([
   'USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'SEK', 'NZD',
   'MXN', 'SGD', 'HKD', 'NOK', 'KRW', 'TRY', 'RUB', 'INR', 'BRL', 'ZAR'
@@ -179,6 +186,22 @@ const createTransaction = async (req, res) => {
       include: { category: true },
     });
 
+    if (webSocketHandler) {
+      try {
+        const currentMonth = webSocketHandler.getCurrentMonth();
+        const { calculateBudgetSummary, getAlertsToSend } = require('../websocket/budgetAlerts');
+        const { percentageUsed } = await calculateBudgetSummary(req.user.id, currentMonth);
+        if (percentageUsed) {
+          const alertsToSend = await getAlertsToSend(req.user.id, currentMonth, percentageUsed);
+          for (const alert of alertsToSend) {
+            await webSocketHandler.sendBudgetAlert(req.user.id, alert.threshold, percentageUsed, currentMonth);
+          }
+        }
+      } catch (error) {
+        console.error('Error sending budget alerts:', error);
+      }
+    }
+
     res.status(201).json(transaction);
   } catch (error) {
     console.error('Error creating transaction:', error);
@@ -248,6 +271,22 @@ const updateTransaction = async (req, res) => {
       include: { category: true },
     });
 
+    if (webSocketHandler) {
+      try {
+        const currentMonth = webSocketHandler.getCurrentMonth();
+        const { calculateBudgetSummary, getAlertsToSend } = require('../websocket/budgetAlerts');
+        const { percentageUsed } = await calculateBudgetSummary(req.user.id, currentMonth);
+        if (percentageUsed) {
+          const alertsToSend = await getAlertsToSend(req.user.id, currentMonth, percentageUsed);
+          for (const alert of alertsToSend) {
+            await webSocketHandler.sendBudgetAlert(req.user.id, alert.threshold, percentageUsed, currentMonth);
+          }
+        }
+      } catch (error) {
+        console.error('Error sending budget alerts:', error);
+      }
+    }
+
     res.json(updated);
   } catch (error) {
     console.error('Error updating transaction:', error);
@@ -274,6 +313,22 @@ const deleteTransaction = async (req, res) => {
     await prisma.transaction.delete({
       where: { id },
     });
+
+    if (webSocketHandler) {
+      try {
+        const currentMonth = webSocketHandler.getCurrentMonth();
+        const { calculateBudgetSummary, getAlertsToSend } = require('../websocket/budgetAlerts');
+        const { percentageUsed } = await calculateBudgetSummary(req.user.id, currentMonth);
+        if (percentageUsed) {
+          const alertsToSend = await getAlertsToSend(req.user.id, currentMonth, percentageUsed);
+          for (const alert of alertsToSend) {
+            await webSocketHandler.sendBudgetAlert(req.user.id, alert.threshold, percentageUsed, currentMonth);
+          }
+        }
+      } catch (error) {
+        console.error('Error sending budget alerts:', error);
+      }
+    }
 
     res.json({ message: 'Transaction deleted successfully' });
   } catch (error) {

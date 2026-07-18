@@ -2,11 +2,13 @@ require('dotenv/config');
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
+const http = require('http');
 const passport = require('./src/config/passport');
 const authRoutes = require('./src/routes/auth');
 const categoryRoutes = require('./src/routes/categories');
 const transactionRoutes = require('./src/routes/transactions');
 const budgetRoutes = require('./src/routes/budgets');
+const { setupWebSocketServer } = require('./src/websocket/handler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -45,7 +47,10 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
 });
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+setupWebSocketServer(server);
+
+server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 

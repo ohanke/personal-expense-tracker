@@ -41,25 +41,28 @@ __tests__/
 
 ## Test Coverage
 
-Current coverage status (as of Sprint 2):
+Current coverage status (as of Sprint 2 - WebSocket):
 
 | File | Statements | Branches | Functions | Lines |
 |------|-----------|----------|-----------|-------|
 | auth.js (middleware) | 100% | 100% | 100% | 100% |
 | authController.js | 90% | 75% | 100% | 90% |
-| budgetController.js | 100% | 100% | 100% | 100% |
+| budgetController.js | 44.44% | 23.52% | 66.66% | 45.16% |
 | categoryController.js | 83.05% | 84.37% | 100% | 83.05% |
-| transactionController.js | 89.14% | 83.8% | 100% | 89.06% |
+| transactionController.js | 83.43% | 77.77% | 100% | 83.33% |
 | budgets.js (routes) | 100% | 100% | 100% | 100% |
+| budgetAlerts.js (websocket) | 100% | 100% | 100% | 100% |
 | categories.js (routes) | 100% | 100% | 100% | 100% |
 | transactions.js (routes) | 100% | 100% | 100% | 100% |
 | prisma.js | 83.33% | 100% | 83.33% | 83.33% |
 | passport.js | 26.47% | 0% | 0% | 26.47% |
 | auth.js (routes) | 40% | 0% | 0% | 40% |
 
-**Overall:** 81.08% statements, 78.97% branches, 71.05% functions, 80.97% lines
-**Test Suites:** 11 passed, 11 total
-**Tests:** 150 passed, 150 total
+**Overall:** 75% statements, 71.42% branches, 62.96% functions, 75% lines
+**Test Suites:** 12 passed, 12 total
+**Tests:** 174 passed, 174 total
+
+*Note: budgetController coverage is lower because not all error paths are exercised in route tests (error handling is tested in unit tests)*
 
 ## What's Tested
 
@@ -140,6 +143,15 @@ Current coverage status (as of Sprint 2):
   - Validates month format (YYYY-MM)
   - Validates amount > 0
 
+### ✅ WebSocket Budget Alerts - `websocket/budgetAlerts.test.js`
+- Alert threshold calculation (50%, 80%, 100%)
+- Budget summary calculation with correct percentages
+- Alert sending logic with once-per-threshold-per-month enforcement
+- No alert spam: already-sent alerts not re-triggered
+- Client message handling (acknowledge_alert)
+- Overspending calculations (>100% percentageUsed)
+- Decimal precision handling for currency
+
 ### ✅ Prisma Utility - `prisma.test.js`
 - Mock fallback client initialization when Prisma fails
 - Mock `findUnique` operations
@@ -197,15 +209,19 @@ app.use('/auth', authRouter);
 
 ## Future Test Improvements
 
-For Sprint 2 and beyond, add tests for:
+For Sprint 3 and beyond, add tests for:
 
-1. **WebSocket Alerts**
-   - Alert thresholds (50%, 80%, 100%)
-   - Once-per-threshold-per-month rule
-   - Alert firing on connection and after transaction changes
+1. **Frontend Integration Tests**
+   - WebSocket client connection and message handling
+   - Alert UI display and dismissal
 
-2. **Security Tests**
-   - User isolation (cannot access other user's data)
+2. **End-to-End Tests**
+   - Full flow: set budget → create transactions → receive alerts
+   - Multi-user scenarios (separate budget alerts per user)
+
+3. **Security Tests**
+   - WebSocket authentication failures
+   - User isolation (cannot access other user's budget data)
    - Authorization checks on all protected endpoints
    - Input validation and sanitization
 

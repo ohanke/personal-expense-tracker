@@ -8,6 +8,10 @@ jest.mock('../../src/utils/prisma', () => ({
     transaction: {
       findMany: jest.fn(),
     },
+    budgetAlert: {
+      findUnique: jest.fn(),
+      create: jest.fn(),
+    },
   },
 }));
 

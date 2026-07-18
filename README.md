@@ -127,6 +127,36 @@ GITHUB_CLIENT_SECRET=your-github-client-secret
   - `remaining`: budgetAmount - spent (null if no budget)
   - `percentageUsed`: (spent / budgetAmount) * 100 (null if no budget)
 
+### WebSocket - Real-time Budget Alerts
+
+**Connection**: `ws://localhost:3000` (requires authenticated session)
+
+**Server → Client Messages**:
+```json
+{
+  "type": "budget_alert",
+  "threshold": 50,
+  "percentageUsed": 75,
+  "budgetAmount": 5000,
+  "month": "2026-07"
+}
+```
+
+**Client → Server Messages**:
+```json
+{
+  "type": "acknowledge_alert"
+}
+```
+
+**Alert Rules**:
+- Sent for current calendar month only
+- Thresholds: 50%, 80%, 100% of budget
+- **Once-per-threshold-per-month**: Each threshold sends alert only once (tracked in `BudgetAlert` table)
+- Alerts triggered:
+  - On WebSocket connection (if threshold already crossed)
+  - After transaction create/update/delete (if spending crosses new threshold)
+
 ## Explanation of Category Deletion Behavior
 
 **Policy: Blocking deletion** ✅
@@ -174,6 +204,6 @@ See `TESTING.md` for detailed testing documentation.
 - ✅ Categories CRUD API
 - ✅ Transactions CRUD API with advanced filtering/searching/pagination/sorting
 - ✅ Budget endpoints API with summary calculation (Sprint 2)
-- ✅ Comprehensive unit and integration tests (150 tests passing)
-- ⏳ WebSocket alerts (Sprint 2)
+- ✅ WebSocket Real-time Budget Alerts (Sprint 2)
+- ✅ Comprehensive unit and integration tests (174 tests passing)
 - ⏳ Frontend (Sprint 3)

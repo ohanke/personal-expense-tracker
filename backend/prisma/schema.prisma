@@ -20,6 +20,7 @@ model User {
   categories      Category[]
   transactions    Transaction[]
   budgets         Budget[]
+  budgetAlerts    BudgetAlert[]
 
   @@unique([provider, provider_user_id])
 }
@@ -67,7 +68,24 @@ model Budget {
   updated_at DateTime  @updatedAt
 
   user      User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  alerts    BudgetAlert[]
 
   @@unique([user_id, month])
   @@index([user_id])
+}
+
+model BudgetAlert {
+  id        String    @id @default(cuid())
+  budget_id String
+  user_id   String
+  threshold Int
+  sent_at   DateTime  @default(now())
+  created_at DateTime  @default(now())
+
+  budget    Budget @relation(fields: [budget_id], references: [id], onDelete: Cascade)
+  user      User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([budget_id, threshold])
+  @@index([user_id])
+  @@index([budget_id])
 }

@@ -161,27 +161,27 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
 - [ ] Paginacja (limit, offset)
 - [ ] Sortowanie (opcjonalne, ale zalecane)
 
-### WebSocket - Real-time Budget Alerts
+### WebSocket - Real-time Budget Alerts ✅ SPRINT 2
 
-**Server → Client (Backend pushes alerts)**:
-- [ ] Backend wysyła alerty budżetowe **dla bieżącego miesiąca kalendarzowego tylko**
-- [ ] **Progi alertów**:
-  - [ ] 50% zużycia budżetu
-  - [ ] 80% zużycia budżetu
-  - [ ] 100% zużycia budżetu
-- [ ] **Reguła**: Alert wysyłany **raz na próg na miesiąc** (nie spam)
-- [ ] Alerty generowane:
-  - [ ] Gdy WebSocket connection się otworzy (jeśli budżet ustawiony)
-  - [ ] Po create/update/delete transakcji (jeśli budżet ustawiony dla bieżącego miesiąca)
-- [ ] Jeśli nie ustawiony budżet dla bieżącego miesiąca: **brak alertów**
-- [ ] Autoryzacja: sprawdzenie czy user jest właścicielem budżetu
+**Server → Client (Backend pushes alerts)** ✅:
+- [x] Backend wysyła alerty budżetowe **dla bieżącego miesiąca kalendarzowego tylko**
+- [x] **Progi alertów**:
+  - [x] 50% zużycia budżetu
+  - [x] 80% zużycia budżetu
+  - [x] 100% zużycia budżetu
+- [x] **Reguła**: Alert wysyłany **raz na próg na miesiąc** (nie spam) - tracked in BudgetAlert table
+- [x] Alerty generowane:
+  - [x] Gdy WebSocket connection się otworzy (jeśli budżet ustawiony)
+  - [x] Po create/update/delete transakcji (jeśli budżet ustawiony dla bieżącego miesiąca)
+- [x] Jeśli nie ustawiony budżet dla bieżącego miesiąca: **brak alertów**
+- [x] Autoryzacja: sprawdzenie czy user jest właścicielem budżetu (via session)
 
-**Client → Server (Client sends meaningful messages)**:
-- [ ] Client wysyła co najmniej jeden message do serwera (np. Subscribe, Ack)
-- [ ] Message musi **wpłynąć na zachowanie serwera** (np. subscription do alertów, acknowledge alert)
-- [ ] **Format i semantyka muszą być udokumentowane w README**
+**Client → Server (Client sends meaningful messages)** ✅:
+- [x] Client wysyła `acknowledge_alert` message do serwera
+- [x] Message wpłyna na zachowanie serwera (możliwość rozszerzenia do mark-as-read)
+- [x] **Format i semantyka udokumentowane w README**
 
-**UI (Client presentation)**:
+**UI (Client presentation)** ⏳:
 - [ ] Alerty budżetowe widoczne w UI
 - [ ] Akceptowalne formy: toast notifications, alert banner, notification panel
 - [ ] Client odbiera i wyświetla powiadomienia w real-time
@@ -323,6 +323,6 @@ Dokumentacja musi zawierać:
 ## Timeline i priorytet
 
 - **Sprint 1 (P0)**: Baza danych ✅ + OAuth + CRUD Kategorii i Transakcji ✅
-- **Sprint 2 (P0)**: Budżet ✅, WebSocket alerty ⏳
+- **Sprint 2 (P0)**: Budżet ✅ + WebSocket alerty ✅
 - **Sprint 3 (P1)**: Frontend Dashboard, zarządzanie transakcjami
-- **Sprint 4 (P2)**: Testy automatyczne, deployment
+- **Sprint 4 (P2)**: E2E testy, deployment

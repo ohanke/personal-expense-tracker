@@ -5,7 +5,7 @@ const validateMonth = (month) => {
   if (!regex.test(month)) {
     return 'Month must be in YYYY-MM format (e.g., 2026-07)';
   }
-  const [m] = month.split('-');
+  const [, m] = month.split('-');
   if (parseInt(m) < 1 || parseInt(m) > 12) {
     return 'Month must be between 01 and 12';
   }

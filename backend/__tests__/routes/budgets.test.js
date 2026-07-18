@@ -9,9 +9,25 @@ jest.mock('../../src/utils/prisma', () => {
       transaction: {
         findMany: jest.fn(),
       },
+      budgetAlert: {
+        findUnique: jest.fn(),
+        create: jest.fn(),
+      },
     },
   };
 });
+
+jest.mock('../../src/websocket/handler', () => ({
+  setupWebSocketServer: jest.fn(),
+  getCurrentMonth: jest.fn(() => '2026-07'),
+  sendBudgetAlert: jest.fn(),
+}));
+
+jest.mock('../../src/websocket/budgetAlerts', () => ({
+  calculateBudgetSummary: jest.fn(),
+  getAlertsToSend: jest.fn(),
+  recordAlertSent: jest.fn(),
+}));
 
 const express = require('express');
 const session = require('express-session');
