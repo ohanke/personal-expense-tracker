@@ -19,7 +19,12 @@
       "Bash(npm run *)",
       "Bash(curl -s http://localhost:5173)",
       "Bash(kill %1)",
-      "Bash(wait)"
+      "Bash(wait)",
+      "Bash(cat)",
+      "Read(//tmp/**)",
+      "Bash(python3 -m py_yaml docker-compose.yml)",
+      "Bash(python3)",
+      "Bash(npm list *)"
     ]
   }
 }

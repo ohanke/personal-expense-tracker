@@ -285,44 +285,44 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
 ## README - Obowiązkowe sekcje
 
 Dokumentacja musi zawierać:
-- [ ] How to run backend locally (komendy)
-- [ ] How to run frontend locally (komendy)
-- [ ] How to run tests (komendy)
-- [ ] Short description of API
-- [ ] Explanation of category deletion behavior (blokada vs reassign)
-- [ ] How to configure Google OAuth credentials
-- [ ] How to configure GitHub OAuth credentials
-- [ ] WebSocket message format (client → server)
-- [ ] WebSocket budget alert rules
-- [ ] Required environment variables (.env)
+- [x] How to run backend locally (komendy)
+- [x] How to run frontend locally (komendy)
+- [x] How to run tests (komendy)
+- [x] Short description of API
+- [x] Explanation of category deletion behavior (blokada vs reassign)
+- [x] How to configure Google OAuth credentials
+- [x] How to configure GitHub OAuth credentials
+- [x] WebSocket message format (client → server)
+- [x] WebSocket budget alert rules
+- [x] Required environment variables (.env)
 
 ---
 
 ## Optional deliverables
 
-- [ ] Containerization via Dockerfile i/lub docker-compose
-- [ ] Jeśli containerization nie będzie możliwy, musi być nota w README
+- [x] Containerization via Dockerfile i/lub docker-compose
+- [x] Jeśli containerization nie będzie możliwy, musi być nota w README
 
 ---
 
 ## Acceptance Checklist (Final verification)
 
-- [ ] User może zalogować się z Google i GitHub
-- [ ] Local user record tworzony automatically na first successful SSO
-- [ ] User może tworzyć kategorie i transakcje
-- [ ] User może ustawić monthly budget i zobaczyć totals, remaining, usage %
-- [ ] User może wyszukiwać i filtrować transakcje
-- [ ] Dane są private per user (bez cross-account access)
-- [ ] While connected, app otrzymuje real-time budget alerts (50%, 80%, 100% dla bieżącego miesiąca)
-- [ ] WebSocket flow includes client → server message (zmieniające server behavior)
-- [ ] App runs locally z README instructions
-- [ ] Tests pass locally
+- [x] User może zalogować się z Google i GitHub
+- [x] Local user record tworzony automatically na first successful SSO
+- [x] User może tworzyć kategorie i transakcje
+- [x] User może ustawić monthly budget i zobaczyć totals, remaining, usage %
+- [x] User może wyszukiwać i filtrować transakcje
+- [x] Dane są private per user (bez cross-account access)
+- [x] While connected, app otrzymuje real-time budget alerts (50%, 80%, 100% dla bieżącego miesiąca)
+- [x] WebSocket flow includes client → server message (zmieniające server behavior)
+- [x] App runs locally z README instructions
+- [x] Tests pass locally
 
 ---
 
 ## Timeline i priorytet
 
-- **Sprint 1 (P0)**: Baza danych ✅ + OAuth + CRUD Kategorii i Transakcji ✅
+- **Sprint 1 (P0)**: Baza danych ✅ + OAuth ✅ + CRUD Kategorii i Transakcji ✅
 - **Sprint 2 (P0)**: Budżet ✅ + WebSocket alerty ✅
-- **Sprint 3 (P1)**: Frontend Dashboard, zarządzanie transakcjami
-- **Sprint 4 (P2)**: E2E testy, deployment
+- **Sprint 3 (P1)**: Frontend Dashboard ✅, zarządzanie transakcjami ✅, WebSocket client ✅
+- **Sprint 4 (P2)**: Docker ✅, Documentation ✅, Finalization ✅
