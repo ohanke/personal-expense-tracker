@@ -58,18 +58,16 @@ const setupWebSocketServer = (server) => {
           month: currentMonth,
         }));
 
-        if (alertsToSend[0].budget || true) {
-          const budget = await prisma.budget.findUnique({
-            where: {
-              user_id_month: {
-                user_id: userId,
-                month: currentMonth,
-              },
+        const budget = await prisma.budget.findUnique({
+          where: {
+            user_id_month: {
+              user_id: userId,
+              month: currentMonth,
             },
-          });
-          if (budget) {
-            await recordAlertSent(budget.id, userId, alert.threshold);
-          }
+          },
+        });
+        if (budget) {
+          await recordAlertSent(budget.id, userId, alert.threshold);
         }
       }
     } catch (error) {

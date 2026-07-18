@@ -15,7 +15,7 @@ const MockPrismaClient = class {
 try {
   const { PrismaClient } = require('@prisma/client');
   prisma = new PrismaClient();
-} catch (error) {
+} catch {
   console.warn('[Prisma] Using mock client (Windows platform limitation)');
   prisma = new MockPrismaClient();
 }

@@ -107,9 +107,9 @@ const getBudgetSummary = async (req, res) => {
       return res.status(400).json({ error: monthError });
     }
 
-    const [year, m] = month.split('-');
-    const monthStart = new Date(`${year}-${m}-01T00:00:00Z`);
-    const monthEnd = new Date(year, parseInt(m), 0, 23, 59, 59, 999);
+    const [yearStr, m] = month.split('-');
+    const monthStart = new Date(`${yearStr}-${m}-01T00:00:00Z`);
+    const monthEnd = new Date(yearStr, parseInt(m), 0, 23, 59, 59, 999);
 
     const budget = await prisma.budget.findUnique({
       where: {

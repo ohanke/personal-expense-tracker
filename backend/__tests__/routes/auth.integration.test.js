@@ -25,7 +25,7 @@ const { isAuthenticated } = require('../../src/middleware/auth');
 
 // Mock strategies
 class MockStrategy extends Strategy {
-  authenticate(req) {
+  authenticate() {
     this.pass();
   }
 }
@@ -51,6 +51,9 @@ const createTestApp = () => {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  // Import auth middleware to verify it's available (used in routes but not in these unit tests)
+  void isAuthenticated;
+
   app.use('/auth', authRouter);
 
   return app;
@@ -61,6 +64,59 @@ describe('Auth Routes Integration', () => {
 
   beforeEach(() => {
     app = createTestApp();
+  });
+
+  describe('GET /auth/google', () => {
+    it('should have Google auth route registered', () => {
+      const googleRouteExists = authRouter.stack.some(
+        layer => layer.route && layer.route.path === '/google'
+      );
+      expect(googleRouteExists).toBe(true);
+    });
+  });
+
+  describe('GET /auth/github', () => {
+    it('should have GitHub auth route registered', () => {
+      const githubRouteExists = authRouter.stack.some(
+        layer => layer.route && layer.route.path === '/github'
+      );
+      expect(githubRouteExists).toBe(true);
+    });
+  });
+
+  describe('GET /auth/google/callback - Manual Verification', () => {
+    it('should have callback handler registered', () => {
+      // Verify the route exists by checking if it's in the stack
+      const googleCallbackRouteExists = authRouter.stack.some(
+        layer => layer.route && layer.route.path === '/google/callback'
+      );
+      expect(googleCallbackRouteExists).toBe(true);
+    });
+  });
+
+  describe('GET /auth/github/callback - Manual Verification', () => {
+    it('should have callback handler registered', () => {
+      const githubCallbackRouteExists = authRouter.stack.some(
+        layer => layer.route && layer.route.path === '/github/callback'
+      );
+      expect(githubCallbackRouteExists).toBe(true);
+    });
+  });
+
+  describe('POST /auth/logout', () => {
+    it('should return 401 if user is not authenticated', async () => {
+      const response = await request(app).post('/auth/logout');
+
+      expect(response.status).toBe(401);
+      expect(response.body).toEqual({ error: 'Unauthorized' });
+    });
+
+    it('should have logout endpoint registered', () => {
+      const logoutRouteExists = authRouter.stack.some(
+        layer => layer.route && layer.route.path === '/logout' && layer.route.methods.post
+      );
+      expect(logoutRouteExists).toBe(true);
+    });
   });
 
   describe('GET /auth/me', () => {

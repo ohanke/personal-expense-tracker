@@ -28,6 +28,7 @@ passport.use(
         const email = profile.emails?.[0]?.value;
         const displayName = profile.displayName;
         const avatarUrl = profile.photos?.[0]?.value;
+        // accessToken and refreshToken are provided by OAuth but not needed for basic user management
 
         let user = await prisma.user.findUnique({
           where: {
@@ -79,6 +80,7 @@ passport.use(
         const email = profile.emails?.[0]?.value;
         const displayName = profile.displayName || profile.username;
         const avatarUrl = profile.photos?.[0]?.value;
+        // accessToken and refreshToken are provided by OAuth but not needed for basic user management
 
         let user = await prisma.user.findUnique({
           where: {

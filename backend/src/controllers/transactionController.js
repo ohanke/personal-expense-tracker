@@ -3,7 +3,7 @@ const { prisma } = require('../utils/prisma');
 let webSocketHandler = null;
 try {
   webSocketHandler = require('../websocket/handler');
-} catch (error) {
+} catch {
   console.warn('WebSocket handler not available (testing environment)');
 }
 

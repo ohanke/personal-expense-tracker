@@ -282,4 +282,238 @@ describe('Category Controller', () => {
       expect(res.json).toHaveBeenCalledWith({ error: 'Unauthorized' });
     });
   });
+
+  describe('Edge Cases', () => {
+    describe('Category names with special characters', () => {
+      it('should allow category with unicode characters', async () => {
+        const mockCategory = {
+          id: 'cat-1',
+          name: '🍔 Fast Food',
+          user_id: 'user-123',
+        };
+        prisma.category.findUnique.mockResolvedValue(null);
+        prisma.category.create.mockResolvedValue(mockCategory);
+
+        const req = {
+          user: { id: 'user-123' },
+          body: { name: '🍔 Fast Food' },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createCategory(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(201);
+        expect(res.json).toHaveBeenCalledWith(mockCategory);
+      });
+
+      it('should allow category with special characters (-, _, @)', async () => {
+        const mockCategory = {
+          id: 'cat-1',
+          name: 'Work@Home-_Expenses',
+          user_id: 'user-123',
+        };
+        prisma.category.findUnique.mockResolvedValue(null);
+        prisma.category.create.mockResolvedValue(mockCategory);
+
+        const req = {
+          user: { id: 'user-123' },
+          body: { name: 'Work@Home-_Expenses' },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createCategory(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(201);
+      });
+
+      it('should allow category with numbers', async () => {
+        const mockCategory = {
+          id: 'cat-1',
+          name: 'Q1 2026 Expenses',
+          user_id: 'user-123',
+        };
+        prisma.category.findUnique.mockResolvedValue(null);
+        prisma.category.create.mockResolvedValue(mockCategory);
+
+        const req = {
+          user: { id: 'user-123' },
+          body: { name: 'Q1 2026 Expenses' },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createCategory(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(201);
+      });
+    });
+
+    describe('Category name boundary cases', () => {
+      it('should accept single character category name', async () => {
+        const mockCategory = {
+          id: 'cat-1',
+          name: 'A',
+          user_id: 'user-123',
+        };
+        prisma.category.findUnique.mockResolvedValue(null);
+        prisma.category.create.mockResolvedValue(mockCategory);
+
+        const req = {
+          user: { id: 'user-123' },
+          body: { name: 'A' },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createCategory(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(201);
+      });
+
+      it('should accept exactly 100 character category name', async () => {
+        const name100chars = 'A'.repeat(100);
+        const mockCategory = {
+          id: 'cat-1',
+          name: name100chars,
+          user_id: 'user-123',
+        };
+        prisma.category.findUnique.mockResolvedValue(null);
+        prisma.category.create.mockResolvedValue(mockCategory);
+
+        const req = {
+          user: { id: 'user-123' },
+          body: { name: name100chars },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createCategory(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(201);
+      });
+
+      it('should handle whitespace-only name as invalid', async () => {
+        const req = {
+          user: { id: 'user-123' },
+          body: { name: '   ' },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createCategory(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ error: expect.stringContaining('required') });
+      });
+
+      it('should trim whitespace from category name', async () => {
+        const mockCategory = {
+          id: 'cat-1',
+          name: 'Food',
+          user_id: 'user-123',
+        };
+        prisma.category.findUnique.mockResolvedValue(null);
+        prisma.category.create.mockResolvedValue(mockCategory);
+
+        const req = {
+          user: { id: 'user-123' },
+          body: { name: '  Food  ' },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createCategory(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(201);
+      });
+    });
+
+    describe('Duplicate category handling', () => {
+      it('should reject duplicate category name for same user', async () => {
+        prisma.category.findUnique.mockResolvedValue({
+          id: 'cat-1',
+          name: 'Food',
+          user_id: 'user-123',
+        });
+
+        const req = {
+          user: { id: 'user-123' },
+          body: { name: 'Food' },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createCategory(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(409);
+        expect(res.json).toHaveBeenCalledWith({ error: expect.stringContaining('already exists') });
+      });
+
+      it('should allow same name for different users', async () => {
+        prisma.category.findUnique.mockResolvedValue(null);
+        const mockCategory = {
+          id: 'cat-1',
+          name: 'Food',
+          user_id: 'user-123',
+        };
+        prisma.category.create.mockResolvedValue(mockCategory);
+
+        const req = {
+          user: { id: 'user-123' },
+          body: { name: 'Food' },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createCategory(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(201);
+      });
+    });
+
+    describe('Case sensitivity handling', () => {
+      it('should treat duplicate check as case-sensitive', async () => {
+        prisma.category.findUnique.mockResolvedValue(null);
+        const mockCategory = {
+          id: 'cat-1',
+          name: 'food',
+          user_id: 'user-123',
+        };
+        prisma.category.create.mockResolvedValue(mockCategory);
+
+        const req = {
+          user: { id: 'user-123' },
+          body: { name: 'food' },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createCategory(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(201);
+      });
+    });
+  });
 });

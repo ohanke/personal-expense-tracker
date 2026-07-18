@@ -24,7 +24,8 @@
       "Read(//tmp/**)",
       "Bash(python3 -m py_yaml docker-compose.yml)",
       "Bash(python3)",
-      "Bash(npm list *)"
+      "Bash(npm list *)",
+      "Bash(git add *)"
     ]
   }
 }

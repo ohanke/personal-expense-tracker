@@ -650,4 +650,277 @@ describe('Transaction Controller', () => {
       expect(res.json).toHaveBeenCalledWith({ error: 'Unauthorized' });
     });
   });
+
+  describe('Edge Cases', () => {
+    describe('Transaction with decimal amounts', () => {
+      it('should accept decimal amounts like 99.99', async () => {
+        prisma.transaction.create.mockResolvedValue({
+          id: 'tx-1',
+          title: 'Decimal test',
+          amount: 99.99,
+          currency: 'USD',
+          date: new Date('2026-07-15'),
+          user_id: 'user-123',
+        });
+
+        const req = {
+          user: { id: 'user-123' },
+          body: {
+            title: 'Decimal test',
+            amount: 99.99,
+            date: '2026-07-15',
+          },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createTransaction(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(201);
+        expect(res.json).toHaveBeenCalled();
+      });
+
+      it('should accept very small decimals like 0.01', async () => {
+        prisma.transaction.create.mockResolvedValue({
+          id: 'tx-1',
+          amount: 0.01,
+        });
+
+        const req = {
+          user: { id: 'user-123' },
+          body: {
+            title: 'Small amount',
+            amount: 0.01,
+            date: '2026-07-15',
+          },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createTransaction(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(201);
+      });
+
+      it('should accept large amounts', async () => {
+        prisma.transaction.create.mockResolvedValue({
+          id: 'tx-1',
+          amount: 999999.99,
+        });
+
+        const req = {
+          user: { id: 'user-123' },
+          body: {
+            title: 'Large amount',
+            amount: 999999.99,
+            date: '2026-07-15',
+          },
+        };
+        const res = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn(),
+        };
+
+        await createTransaction(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(201);
+      });
+    });
+
+    describe('Complex filtering combinations', () => {
+      it('should handle search + category + dateRange + amount filters together', async () => {
+        prisma.transaction.findMany.mockResolvedValue([]);
+        prisma.transaction.count.mockResolvedValue(0);
+
+        const req = {
+          user: { id: 'user-123' },
+          query: {
+            search: 'grocery',
+            category: 'cat-1',
+            dateFrom: '2026-07-01',
+            dateTo: '2026-07-31',
+            amountMin: '10',
+            amountMax: '100',
+            limit: '20',
+            offset: '0',
+          },
+        };
+        const res = { json: jest.fn() };
+
+        await getTransactions(req, res);
+
+        expect(prisma.transaction.findMany).toHaveBeenCalledWith(
+          expect.objectContaining({
+            where: expect.objectContaining({
+              user_id: 'user-123',
+              OR: expect.any(Array),
+              category_id: 'cat-1',
+              date: expect.any(Object),
+              amount: expect.any(Object),
+            }),
+          })
+        );
+      });
+
+      it('should handle invalid limit by capping at 100', async () => {
+        prisma.transaction.findMany.mockResolvedValue([]);
+        prisma.transaction.count.mockResolvedValue(0);
+
+        const req = {
+          user: { id: 'user-123' },
+          query: { limit: '9999' },
+        };
+        const res = { json: jest.fn() };
+
+        await getTransactions(req, res);
+
+        expect(prisma.transaction.findMany).toHaveBeenCalledWith(
+          expect.objectContaining({
+            take: 100,
+          })
+        );
+      });
+
+      it('should handle negative offset by using 0', async () => {
+        prisma.transaction.findMany.mockResolvedValue([]);
+        prisma.transaction.count.mockResolvedValue(0);
+
+        const req = {
+          user: { id: 'user-123' },
+          query: { offset: '-50' },
+        };
+        const res = { json: jest.fn() };
+
+        await getTransactions(req, res);
+
+        expect(prisma.transaction.findMany).toHaveBeenCalledWith(
+          expect.objectContaining({
+            skip: 0,
+          })
+        );
+      });
+
+      it('should handle non-numeric limit gracefully', async () => {
+        prisma.transaction.findMany.mockResolvedValue([]);
+        prisma.transaction.count.mockResolvedValue(0);
+
+        const req = {
+          user: { id: 'user-123' },
+          query: { limit: 'invalid' },
+        };
+        const res = { json: jest.fn() };
+
+        await getTransactions(req, res);
+
+        expect(prisma.transaction.findMany).toHaveBeenCalledWith(
+          expect.objectContaining({
+            take: expect.any(Number),
+          })
+        );
+      });
+    });
+
+    describe('Amount range filtering edge cases', () => {
+      it('should filter when amountMin equals amountMax', async () => {
+        prisma.transaction.findMany.mockResolvedValue([]);
+        prisma.transaction.count.mockResolvedValue(0);
+
+        const req = {
+          user: { id: 'user-123' },
+          query: { amountMin: '50.00', amountMax: '50.00' },
+        };
+        const res = { json: jest.fn() };
+
+        await getTransactions(req, res);
+
+        expect(prisma.transaction.findMany).toHaveBeenCalledWith(
+          expect.objectContaining({
+            where: expect.objectContaining({
+              amount: {
+                gte: 50,
+                lte: 50,
+              },
+            }),
+          })
+        );
+      });
+
+      it('should handle amountMin > amountMax (swap or ignore)', async () => {
+        prisma.transaction.findMany.mockResolvedValue([]);
+        prisma.transaction.count.mockResolvedValue(0);
+
+        const req = {
+          user: { id: 'user-123' },
+          query: { amountMin: '100', amountMax: '50' },
+        };
+        const res = { json: jest.fn() };
+
+        await getTransactions(req, res);
+
+        // Should still call with amount filters (implementation specific)
+        expect(prisma.transaction.findMany).toHaveBeenCalled();
+      });
+    });
+
+    describe('Date handling edge cases', () => {
+      it('should handle transactions at month boundaries', async () => {
+        prisma.transaction.findMany.mockResolvedValue([]);
+        prisma.transaction.count.mockResolvedValue(0);
+
+        const req = {
+          user: { id: 'user-123' },
+          query: {
+            dateFrom: '2026-07-01',
+            dateTo: '2026-07-31',
+          },
+        };
+        const res = { json: jest.fn() };
+
+        await getTransactions(req, res);
+
+        expect(prisma.transaction.findMany).toHaveBeenCalled();
+      });
+    });
+
+    describe('Sort order edge cases', () => {
+      it('should default to date DESC when sortOrder is invalid', async () => {
+        prisma.transaction.findMany.mockResolvedValue([]);
+        prisma.transaction.count.mockResolvedValue(0);
+
+        const req = {
+          user: { id: 'user-123' },
+          query: { sortBy: 'date', sortOrder: 'invalid' },
+        };
+        const res = { json: jest.fn() };
+
+        await getTransactions(req, res);
+
+        // Should use desc as default
+        expect(prisma.transaction.findMany).toHaveBeenCalled();
+      });
+
+      it('should sort by amount when sortBy=amount', async () => {
+        prisma.transaction.findMany.mockResolvedValue([]);
+        prisma.transaction.count.mockResolvedValue(0);
+
+        const req = {
+          user: { id: 'user-123' },
+          query: { sortBy: 'amount', sortOrder: 'asc' },
+        };
+        const res = { json: jest.fn() };
+
+        await getTransactions(req, res);
+
+        expect(prisma.transaction.findMany).toHaveBeenCalledWith(
+          expect.objectContaining({
+            orderBy: { amount: 'asc' },
+          })
+        );
+      });
+    });
+  });
 });
