@@ -99,38 +99,39 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="space-y-6">
-      {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-700 text-sm font-medium">{error}</p>
-        </div>
-      )}
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
+        {error && (
+          <div className="p-4 bg-red-50 border border-red-100 rounded-lg">
+            <p className="text-red-600 text-sm font-semibold">{error}</p>
+          </div>
+        )}
 
-      <div className="flex items-center justify-center gap-3">
-        <button
-          onClick={handlePreviousMonth}
-          className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors duration-200"
-        >
-          ← Previous
-        </button>
-        <h2 className="text-2xl font-semibold text-slate-900 min-w-48 text-center">
-          {formatMonth(currentMonth)}
-        </h2>
-        <button
-          onClick={handleNextMonth}
-          className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors duration-200"
-        >
-          Next →
-        </button>
-      </div>
-
-      {loading ? (
-        <div className="text-center py-12">
-          <p className="text-gray-600">Loading budget data...</p>
+        <div className="flex items-center justify-center gap-4 mb-8">
+          <button
+            onClick={handlePreviousMonth}
+            className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 font-semibold hover:bg-slate-50 transition-colors duration-200"
+          >
+            ← Previous
+          </button>
+          <h2 className="text-3xl font-bold text-slate-900 min-w-56 text-center">
+            {formatMonth(currentMonth)}
+          </h2>
+          <button
+            onClick={handleNextMonth}
+            className="px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 font-semibold hover:bg-slate-50 transition-colors duration-200"
+          >
+            Next →
+          </button>
         </div>
-      ) : budgetData && budgetData.budgetAmount ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-slate-600">Loading budget data...</p>
+          </div>
+        ) : budgetData && budgetData.budgetAmount ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
                 <p className="text-slate-600 text-xs font-medium uppercase tracking-wide">Spent</p>
@@ -181,7 +182,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
             <h3 className="text-sm font-semibold text-slate-900 mb-4 uppercase tracking-wide">Budget Settings</h3>
             {showBudgetForm ? (
               <form onSubmit={handleSetBudget} className="space-y-4">
@@ -196,14 +197,14 @@ export default function Dashboard() {
                     value={formAmount}
                     onChange={(e) => setFormAmount(e.target.value)}
                     placeholder="Enter amount"
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-slate-400 transition-colors"
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                     autoFocus
                   />
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <button
                     type="submit"
-                    className="flex-1 px-3 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+                    className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
                   >
                     Save
                   </button>
@@ -213,7 +214,7 @@ export default function Dashboard() {
                       setShowBudgetForm(false);
                       setFormAmount('');
                     }}
-                    className="flex-1 px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors"
+                    className="flex-1 px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-colors"
                   >
                     Cancel
                   </button>
@@ -222,86 +223,87 @@ export default function Dashboard() {
             ) : (
               <button
                 onClick={() => setShowBudgetForm(true)}
-                className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors shadow-sm"
+                className="w-full px-5 py-2.5 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
               >
                 Update Budget
               </button>
             )}
           </div>
         </div>
-      ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
-          <svg
-            className="mx-auto h-12 w-12 text-slate-300 mb-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <h3 className="text-lg font-semibold text-slate-900 mb-2">
-            No Budget Set for {formatMonth(currentMonth)}
-          </h3>
-          <p className="text-slate-600 mb-6">
-            Set up a budget to start tracking your expenses and receiving alerts.
-          </p>
-          <button
-            onClick={() => setShowBudgetForm(true)}
-            className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors shadow-sm inline-block"
-          >
-            Set Budget Now
-          </button>
-        </div>
-      )}
+        ) : (
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-12 text-center">
+            <svg
+              className="mx-auto h-12 w-12 text-slate-300 mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">
+              No Budget Set for {formatMonth(currentMonth)}
+            </h3>
+            <p className="text-slate-600 mb-6">
+              Set up a budget to start tracking your expenses and receiving alerts.
+            </p>
+            <button
+              onClick={() => setShowBudgetForm(true)}
+              className="px-5 py-2.5 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors inline-block"
+            >
+              Set Budget Now
+            </button>
+          </div>
+        )}
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-        <div className="flex flex-wrap gap-2 mb-6">
-          <button
-            onClick={() => {
-              setEditingTransaction(null);
-              setShowTransactionForm(true);
-            }}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors shadow-sm"
-          >
-            + Add Transaction
-          </button>
-          <button
-            onClick={() => setShowCategoriesManager(true)}
-            className="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors"
-          >
-            Manage Categories
-          </button>
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+          <div className="flex flex-wrap gap-3 mb-6">
+            <button
+              onClick={() => {
+                setEditingTransaction(null);
+                setShowTransactionForm(true);
+              }}
+              className="px-5 py-2.5 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
+            >
+              + Add Transaction
+            </button>
+            <button
+              onClick={() => setShowCategoriesManager(true)}
+              className="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-colors"
+            >
+              Manage Categories
+            </button>
+          </div>
+
+          <TransactionList
+            month={currentMonth}
+            onEdit={handleEditTransaction}
+            onRefreshBudget={handleRefreshBudget}
+            refreshTrigger={refreshTrigger}
+          />
         </div>
 
-        <TransactionList
+        <CategoriesManager
+          isOpen={showCategoriesManager}
+          onClose={() => setShowCategoriesManager(false)}
+          onRefresh={() => setRefreshTrigger((prev) => prev + 1)}
+        />
+
+        <TransactionForm
+          isOpen={showTransactionForm}
+          onClose={() => {
+            setShowTransactionForm(false);
+            setEditingTransaction(null);
+          }}
+          onSuccess={handleTransactionSuccess}
+          transactionToEdit={editingTransaction}
           month={currentMonth}
-          onEdit={handleEditTransaction}
-          onRefreshBudget={handleRefreshBudget}
-          refreshTrigger={refreshTrigger}
         />
       </div>
-
-      <CategoriesManager
-        isOpen={showCategoriesManager}
-        onClose={() => setShowCategoriesManager(false)}
-        onRefresh={() => setRefreshTrigger((prev) => prev + 1)}
-      />
-
-      <TransactionForm
-        isOpen={showTransactionForm}
-        onClose={() => {
-          setShowTransactionForm(false);
-          setEditingTransaction(null);
-        }}
-        onSuccess={handleTransactionSuccess}
-        transactionToEdit={editingTransaction}
-        month={currentMonth}
-      />
     </div>
   );
 }
