@@ -77,7 +77,67 @@ npm run dev  # Uruchom dev server
 
 ```
 DATABASE_URL=file:./dev.db
+PORT=3000
+NODE_ENV=development
+SESSION_SECRET=dev-session-secret-key
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
 ```
+
+## API Endpoints
+
+### Authentication
+- `GET /auth/google` - Initiate Google OAuth flow
+- `GET /auth/google/callback` - Google OAuth callback
+- `GET /auth/github` - Initiate GitHub OAuth flow
+- `GET /auth/github/callback` - GitHub OAuth callback
+- `GET /auth/me` - Get logged-in user profile (requires auth)
+- `POST /auth/logout` - Logout current user
+
+### Categories
+- `GET /api/categories` - List user's categories
+- `POST /api/categories` - Create new category
+- `PUT /api/categories/:id` - Update category name
+- `DELETE /api/categories/:id` - Delete category (see deletion rules below)
+
+### Transactions (Coming soon)
+- `GET /api/transactions` - List user's transactions
+- `POST /api/transactions` - Create transaction
+- `PUT /api/transactions/:id` - Update transaction
+- `DELETE /api/transactions/:id` - Delete transaction
+
+## Explanation of Category Deletion Behavior
+
+**Policy: Blocking deletion** ✅
+
+Deleting a category that contains existing transactions is **blocked** with a `409 Conflict` error.
+
+**Reason**: This prevents accidental data loss and ensures referential integrity. Users must explicitly:
+1. Delete the associated transactions first, OR
+2. Reassign them to another category before deleting the category
+
+**Error Response**:
+```json
+{
+  "error": "Cannot delete category with existing transactions. Please reassign or delete transactions first.",
+  "transactionCount": 2
+}
+```
+
+This approach prioritizes data safety over convenience, which is critical for a financial tracking application.
+
+## Testing
+
+```bash
+cd backend
+npm test              # Run all tests
+npm run test:watch   # Run tests in watch mode
+npm test -- --coverage  # Generate coverage report
+```
+
+See `TESTING.md` for detailed testing documentation.
 
 ## Ograniczenia bazy danych
 
@@ -89,7 +149,12 @@ DATABASE_URL=file:./dev.db
 ## Status
 
 - ✅ Backend project initialized
-- ✅ Prisma schema created
-- ✅ Database migrations applied
-- ⏳ API endpoints (pending)
-- ⏳ Frontend (pending)
+- ✅ Prisma schema created with all models
+- ✅ OAuth authentication (Google + GitHub)
+- ✅ Session management with express-session
+- ✅ Categories CRUD API
+- ✅ Comprehensive unit and integration tests
+- ⏳ Transactions CRUD API (Sprint 1)
+- ⏳ Budget endpoints (Sprint 2)
+- ⏳ WebSocket alerts (Sprint 2)
+- ⏳ Frontend (Sprint 3)

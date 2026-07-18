@@ -119,15 +119,15 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
 - [x] Account linking między Google i GitHub nie jest wymagane (mogą być oddzielne konta)
 - [x] Bezpieczna implementacja Google i GitHub SSO
 
-### CRUD Kategorii
-- [ ] GET /api/categories - lista kategorii użytkownika
-- [ ] POST /api/categories - utworzenie nowej kategorii
-- [ ] PUT /api/categories/:id - rename kategorii (edycja nazwy)
-- [ ] DELETE /api/categories/:id - usunięcie kategorii
-  - **Reguła**: Blokada usunięcia jeśli istnieją powiązane transakcje, LUB przypisanie istniejących transakcji do kategorii "Uncategorized/Bez kategorii"
-  - Wybrana reguła musi być **udokumentowana w README**
-- [ ] Walidacja: nazwa unikalna na użytkownika
-- [ ] Autoryzacja: każdy endpoint musi sprawdzać czy user jest właścicielem kategorii
+### CRUD Kategorii ✅ SPRINT 1
+- [x] GET /api/categories - lista kategorii użytkownika
+- [x] POST /api/categories - utworzenie nowej kategorii
+- [x] PUT /api/categories/:id - rename kategorii (edycja nazwy)
+- [x] DELETE /api/categories/:id - usunięcie kategorii
+  - **Reguła**: Blokada usunięcia jeśli istnieją powiązane transakcje (409 Conflict)
+  - **Dokumentacja**: README.md - sekcja "Explanation of Category Deletion Behavior"
+- [x] Walidacja: nazwa unikalna na użytkownika
+- [x] Autoryzacja: każdy endpoint musi sprawdzać czy user jest właścicielem kategorii
 
 ### CRUD Transakcji
 - [ ] GET /api/transactions - lista transakcji użytkownika (z paginacją)

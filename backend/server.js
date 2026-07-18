@@ -4,6 +4,7 @@ const session = require('express-session');
 const cors = require('cors');
 const passport = require('./src/config/passport');
 const authRoutes = require('./src/routes/auth');
+const categoryRoutes = require('./src/routes/categories');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -34,6 +35,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/auth', authRoutes);
+app.use('/api/categories', categoryRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
