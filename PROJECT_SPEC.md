@@ -1,5 +1,41 @@
 # Personal Expense Tracker - Project Specification
 
+---
+
+## 🔒 Protokół Walidacji (Workflow)
+
+**Obowiązkowe zasady dla każdego commit'a i implementacji:**
+
+### 1️⃣ Zero-Trust Changes
+Po każdej modyfikacji kodu w **backendzie** lub **frontendzie** mam obowiązek samodzielnie uruchomić komendy weryfikujące w terminalu:
+- **Backend**: `node --check src/server.js` (syntax check) lub `npm run lint` (jeśli dostępny)
+- **Frontend**: `npm run build` (sprawdzenie czy buduje się bez błędów)
+- **Testy**: `npm test` (gdy testy będą już napisane)
+- **Prisma**: `npx prisma validate` (schema validation)
+
+Żadna zmiana nie jest ukończona bez pomyślnego przejścia walidacji.
+
+### 2️⃣ Auto-Fix Loop
+Jeśli jakakolwiek komenda walidująca (build, test, linter) zwróci błąd:
+- ❌ **NIE** przerywam pracę
+- ❌ **NIE** pytam użytkownika o zdanie
+- ✅ Analizuję błąd z terminalu
+- ✅ Wprowadzam poprawkę w kodzie
+- ✅ Uruchamiam walidację ponownie
+- ✅ Powtarzam aż przejdzie bez błędów
+
+To jest moja odpowiedzialność - iteruję aż kod będzie czysty.
+
+### 3️⃣ Zgłaszanie gotowości
+Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
+- ✅ Kod został napisany
+- ✅ Automatyczna weryfikacja w terminalu zakończyła się **sukcesem** (bez błędów)
+- ✅ Status: "zadanie ukończone" + output z walidacji
+
+**Nie ma: "kod jest gotowy, ale nie testuję"**
+
+---
+
 ## Cel projektu
 
 **MVP aplikacji "Personal Expense Tracker"** - lokalne uruchomienie, przeznaczona do śledżenia wydatków osobistych.
