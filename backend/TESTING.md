@@ -41,23 +41,25 @@ __tests__/
 
 ## Test Coverage
 
-Current coverage status (as of Sprint 1):
+Current coverage status (as of Sprint 2):
 
 | File | Statements | Branches | Functions | Lines |
 |------|-----------|----------|-----------|-------|
 | auth.js (middleware) | 100% | 100% | 100% | 100% |
 | authController.js | 90% | 75% | 100% | 90% |
+| budgetController.js | 100% | 100% | 100% | 100% |
 | categoryController.js | 83.05% | 84.37% | 100% | 83.05% |
 | transactionController.js | 89.14% | 83.8% | 100% | 89.06% |
+| budgets.js (routes) | 100% | 100% | 100% | 100% |
 | categories.js (routes) | 100% | 100% | 100% | 100% |
 | transactions.js (routes) | 100% | 100% | 100% | 100% |
 | prisma.js | 83.33% | 100% | 83.33% | 83.33% |
 | passport.js | 26.47% | 0% | 0% | 26.47% |
 | auth.js (routes) | 40% | 0% | 0% | 40% |
 
-**Overall:** 76.51% statements, 74.53% branches, 65.62% functions, 76.43% lines
-**Test Suites:** 9 passed, 9 total
-**Tests:** 105 passed, 105 total
+**Overall:** 81.08% statements, 78.97% branches, 71.05% functions, 80.97% lines
+**Test Suites:** 11 passed, 11 total
+**Tests:** 150 passed, 150 total
 
 ## What's Tested
 
@@ -110,6 +112,33 @@ Current coverage status (as of Sprint 1):
 - Sorting parameter handling
 - Comprehensive validation error responses
 - Transaction ownership verification (403 Unauthorized)
+
+### ✅ Budget Controller - `budgetController.test.js`
+- Get budget with month validation (YYYY-MM format)
+- Ownership verification via user_id
+- Create and update (upsert) budget operations
+- Amount validation (> 0)
+- Budget summary calculation:
+  - Correct transaction sum per month
+  - Remaining budget calculation (budget - spent)
+  - Percentage used calculation ((spent / budget) * 100)
+  - Handling null budget (no budget set for month)
+  - Decimal precision for currency amounts
+- Month filtering in transaction queries
+- Error handling for database failures
+
+### ✅ Budget Routes Integration - `routes/budgets.test.js`
+- Authentication enforcement on all endpoints (401)
+- GET /budgets/:month - retrieve budget for specific month (404 if not found)
+- POST /budgets - create new budget (201) or update existing (200)
+- GET /budgets/:month/summary - comprehensive budget analysis:
+  - Returns { budgetAmount, spent, remaining, percentageUsed }
+  - Handles no budget set (null budgetAmount)
+  - Handles no transactions (0 spent)
+  - Handles overspent scenarios (negative remaining, >100% percentageUsed)
+  - Correct decimal precision for currency calculations
+  - Validates month format (YYYY-MM)
+  - Validates amount > 0
 
 ### ✅ Prisma Utility - `prisma.test.js`
 - Mock fallback client initialization when Prisma fails
@@ -170,17 +199,12 @@ app.use('/auth', authRouter);
 
 For Sprint 2 and beyond, add tests for:
 
-1. **Budget Endpoints**
-   - Set monthly budget
-   - Fetch budget summary
-   - Calculate spending vs budget
-
-4. **WebSocket Alerts**
+1. **WebSocket Alerts**
    - Alert thresholds (50%, 80%, 100%)
    - Once-per-threshold-per-month rule
    - Alert firing on connection and after transaction changes
 
-5. **Security Tests**
+2. **Security Tests**
    - User isolation (cannot access other user's data)
    - Authorization checks on all protected endpoints
    - Input validation and sanitization

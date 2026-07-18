@@ -113,6 +113,20 @@ GITHUB_CLIENT_SECRET=your-github-client-secret
   - Same fields as POST
 - `DELETE /api/transactions/:id` - Delete transaction
 
+### Budgets
+- `GET /api/budgets/:month` - Get budget for specific month (format: YYYY-MM)
+  - Returns: `{ id, user_id, month, amount, created_at, updated_at }`
+  - Status 404 if no budget set for month
+- `POST /api/budgets` - Create or update budget (upsert)
+  - Body: `{ month: "YYYY-MM", amount: number > 0 }`
+  - Status 201 on create, 200 on update
+- `GET /api/budgets/:month/summary` - Get budget summary with spending analysis
+  - Returns: `{ budgetAmount, spent, remaining, percentageUsed }`
+  - `budgetAmount`: null if no budget set, otherwise the budget amount
+  - `spent`: sum of all transactions in the month
+  - `remaining`: budgetAmount - spent (null if no budget)
+  - `percentageUsed`: (spent / budgetAmount) * 100 (null if no budget)
+
 ## Explanation of Category Deletion Behavior
 
 **Policy: Blocking deletion** ✅
@@ -159,7 +173,7 @@ See `TESTING.md` for detailed testing documentation.
 - ✅ Session management with express-session
 - ✅ Categories CRUD API
 - ✅ Transactions CRUD API with advanced filtering/searching/pagination/sorting
-- ✅ Comprehensive unit and integration tests (105 tests passing)
-- ⏳ Budget endpoints (Sprint 2)
+- ✅ Budget endpoints API with summary calculation (Sprint 2)
+- ✅ Comprehensive unit and integration tests (150 tests passing)
 - ⏳ WebSocket alerts (Sprint 2)
 - ⏳ Frontend (Sprint 3)

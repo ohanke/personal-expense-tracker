@@ -144,13 +144,13 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
 - [x] **Sortowanie**: sortBy (date/amount/title), sortOrder (asc/desc), domyślnie date DESC
 - [ ] **Alerty WebSocket**: Po create/update/delete wysłać alert budżetowy jeśli zmieniony procent zużycia (SPRINT 2)
 
-### Budżet miesięczny
-- [ ] GET /api/budgets/:month - pobranie budżetu na dany miesiąc
-- [ ] POST /api/budgets - ustawienie budżetu (lub aktualizacja istniejącego)
-- [ ] Obliczanie sumy wydatków w miesiącu
-- [ ] Obliczanie pozostałego budżetu (amount - suma wydatków)
-- [ ] Obliczanie procentu zużycia (suma wydatków / amount * 100)
-- [ ] Endpoint `GET /api/budgets/:month/summary` - zwraca {budgetAmount, spent, remaining, percentageUsed}
+### Budżet miesięczny ✅ SPRINT 2
+- [x] GET /api/budgets/:month - pobranie budżetu na dany miesiąc
+- [x] POST /api/budgets - ustawienie budżetu (lub aktualizacja istniejącego)
+- [x] Obliczanie sumy wydatków w miesiącu
+- [x] Obliczanie pozostałego budżetu (amount - suma wydatków)
+- [x] Obliczanie procentu zużycia (suma wydatków / amount * 100)
+- [x] Endpoint `GET /api/budgets/:month/summary` - zwraca {budgetAmount, spent, remaining, percentageUsed}
 
 ### Wyszukiwanie i filtrowanie transakcji
 - [ ] **Search** - wyszukiwanie po title i notes (partial match, case-insensitive)
@@ -322,7 +322,7 @@ Dokumentacja musi zawierać:
 
 ## Timeline i priorytet
 
-- **Sprint 1 (P0)**: Baza danych ✅ + OAuth + CRUD Kategorii i Transakcji
-- **Sprint 2 (P0)**: Budżet, Filtrowanie, WebSocket alerty
+- **Sprint 1 (P0)**: Baza danych ✅ + OAuth + CRUD Kategorii i Transakcji ✅
+- **Sprint 2 (P0)**: Budżet ✅, WebSocket alerty ⏳
 - **Sprint 3 (P1)**: Frontend Dashboard, zarządzanie transakcjami
 - **Sprint 4 (P2)**: Testy automatyczne, deployment

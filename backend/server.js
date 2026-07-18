@@ -6,6 +6,7 @@ const passport = require('./src/config/passport');
 const authRoutes = require('./src/routes/auth');
 const categoryRoutes = require('./src/routes/categories');
 const transactionRoutes = require('./src/routes/transactions');
+const budgetRoutes = require('./src/routes/budgets');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -38,6 +39,7 @@ app.use(passport.session());
 app.use('/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/budgets', budgetRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
