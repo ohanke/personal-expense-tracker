@@ -27,7 +27,8 @@
       "Bash(npm list *)",
       "Bash(git add *)",
       "PowerShell(Get-NetTCPConnection *)",
-      "PowerShell(Get-Process *)"
+      "PowerShell(Get-Process *)",
+      "PowerShell(netstat *)"
     ]
   }
 }

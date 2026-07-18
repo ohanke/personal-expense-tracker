@@ -13,40 +13,31 @@ export default function Layout() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-slate-900">Personal Expense Tracker</h1>
-          <div className="flex items-center gap-4">
-            {user && (
-              <div className="flex items-center gap-3">
-                {user.avatar_url && (
-                  <img
-                    src={user.avatar_url}
-                    alt={user.display_name || user.email}
-                    className="w-10 h-10 rounded-full border border-slate-200"
-                  />
-                )}
-                <div>
-                  <p className="text-sm font-medium text-slate-900">
-                    {user.display_name || user.email}
-                  </p>
-                </div>
-              </div>
-            )}
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
-            >
-              Wyloguj się
-            </button>
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col items-center">
+        <header className="w-full bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+          <div className="w-full max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+            <h1 className="text-xl font-bold text-slate-900 tracking-tight">Expense Tracker</h1>
+            <div className="flex items-center gap-4">
+              {user && (
+                  <div className="hidden sm:flex items-center gap-3">
+                    <p className="text-sm font-semibold text-slate-700">
+                      {user.display_name || user.email}
+                    </p>
+                  </div>
+              )}
+              <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border-2 border-slate-200 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all"
+              >
+                Wyloguj się
+              </button>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-8">
-        <Outlet />
-      </main>
-    </div>
+        <main className="w-full max-w-5xl mx-auto px-6 py-8">
+          <Outlet />
+        </main>
+      </div>
   );
 }
