@@ -187,9 +187,9 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
 - [ ] Client odbiera i wyświetla powiadomienia w real-time
 
 ### Frontend - UI i komponenty
-- [ ] **Ekran logowania** z opcjami:
-  - [ ] Continue with Google
-  - [ ] Continue with GitHub
+- [x] **Ekran logowania** z opcjami:
+  - [x] Continue with Google
+  - [x] Continue with GitHub
 - [ ] **Dashboard główny** (po zalogowaniu) - pokazuje wybrany miesiąc:
   - [ ] Całkowita suma wydatków w miesiącu
   - [ ] Kwota budżetu miesięcznego
@@ -212,7 +212,7 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
   - [ ] Usunięcie kategorii (ze sprawdzeniem transakcji)
 - [ ] **Ustawienia budżetu** (część dashboarda lub osobna strona):
   - [ ] Formularz ustawienia budżetu dla wybranego miesiąca
-- [ ] **Logout**
+- [x] **Logout**
 - [ ] **UI Requirements - Modern, Styled, Responsive**:
   - [ ] Spójne spacing i typografia
   - [ ] Visible hover i focus states dla elementów interaktywnych
