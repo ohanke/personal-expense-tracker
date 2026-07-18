@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { budgetAPI } from '../services/api';
+import CategoriesManager from '../components/CategoriesManager';
+import TransactionForm from '../components/TransactionForm';
+import TransactionList from '../components/TransactionList';
 
 export default function Dashboard() {
   const [currentMonth, setCurrentMonth] = useState(() => {
@@ -13,9 +16,14 @@ export default function Dashboard() {
   const [showBudgetForm, setShowBudgetForm] = useState(false);
   const [formAmount, setFormAmount] = useState('');
 
+  const [showCategoriesManager, setShowCategoriesManager] = useState(false);
+  const [showTransactionForm, setShowTransactionForm] = useState(false);
+  const [editingTransaction, setEditingTransaction] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
   useEffect(() => {
     fetchBudgetSummary();
-  }, [currentMonth]);
+  }, [currentMonth, refreshTrigger]);
 
   const fetchBudgetSummary = async () => {
     setLoading(true);
@@ -59,6 +67,20 @@ export default function Dashboard() {
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const handleEditTransaction = (transaction) => {
+    setEditingTransaction(transaction);
+    setShowTransactionForm(true);
+  };
+
+  const handleTransactionSuccess = () => {
+    setEditingTransaction(null);
+    setRefreshTrigger((prev) => prev + 1);
+  };
+
+  const handleRefreshBudget = () => {
+    setRefreshTrigger((prev) => prev + 1);
   };
 
   const formatCurrency = (amount) => {
@@ -238,6 +260,50 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex gap-3 mb-6">
+          <button
+            onClick={() => {
+              setEditingTransaction(null);
+              setShowTransactionForm(true);
+            }}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+          >
+            + Add Transaction
+          </button>
+          <button
+            onClick={() => setShowCategoriesManager(true)}
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors"
+          >
+            Manage Categories
+          </button>
+        </div>
+
+        <TransactionList
+          month={currentMonth}
+          onEdit={handleEditTransaction}
+          onRefreshBudget={handleRefreshBudget}
+          refreshTrigger={refreshTrigger}
+        />
+      </div>
+
+      <CategoriesManager
+        isOpen={showCategoriesManager}
+        onClose={() => setShowCategoriesManager(false)}
+        onRefresh={() => setRefreshTrigger((prev) => prev + 1)}
+      />
+
+      <TransactionForm
+        isOpen={showTransactionForm}
+        onClose={() => {
+          setShowTransactionForm(false);
+          setEditingTransaction(null);
+        }}
+        onSuccess={handleTransactionSuccess}
+        transactionToEdit={editingTransaction}
+        month={currentMonth}
+      />
     </div>
   );
 }

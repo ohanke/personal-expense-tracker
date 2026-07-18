@@ -44,3 +44,58 @@ export const budgetAPI = {
       body: JSON.stringify({ month, amount }),
     }),
 };
+
+export const categoryAPI = {
+  getCategories: () => request('/api/categories'),
+  createCategory: (name) =>
+    request('/api/categories', {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+    }),
+  updateCategory: (id, name) =>
+    request(`/api/categories/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ name }),
+    }),
+  deleteCategory: (id) =>
+    request(`/api/categories/${id}`, {
+      method: 'DELETE',
+    }),
+};
+
+const buildQueryString = (params) => {
+  const filtered = Object.entries(params).filter(([, v]) => v !== null && v !== undefined && v !== '');
+  if (filtered.length === 0) return '';
+  return '?' + filtered.map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join('&');
+};
+
+export const transactionAPI = {
+  getTransactions: (filters = {}) => {
+    const { search, category, dateFrom, dateTo, amountMin, amountMax, limit = 10, offset = 0 } = filters;
+    const query = buildQueryString({
+      search: search || undefined,
+      category: category || undefined,
+      dateFrom: dateFrom || undefined,
+      dateTo: dateTo || undefined,
+      amountMin: amountMin || undefined,
+      amountMax: amountMax || undefined,
+      limit,
+      offset,
+    });
+    return request(`/api/transactions${query}`);
+  },
+  createTransaction: (data) =>
+    request('/api/transactions', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  updateTransaction: (id, data) =>
+    request(`/api/transactions/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+  deleteTransaction: (id) =>
+    request(`/api/transactions/${id}`, {
+      method: 'DELETE',
+    }),
+};

@@ -198,18 +198,18 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
   - [x] Stan "Brak ustawionego budżetu" zamiast mylących liczb
   - [ ] Lista ostatnich transakcji
   - [ ] Widoczne alerty budżetowe (toast/banner/panel)
-- [ ] **Ekran transakcji** z:
-  - [ ] Listą/tabelą transakcji
-  - [ ] Polem wyszukiwania (title + notes)
-  - [ ] Filtrami: kategoria, zakres dat (ten miesiąc, ostatni miesiąc, custom), zakres kwot
-  - [ ] UI do tworzenia/edycji (modal, drawer lub osobna strona)
-  - [ ] Przycisk usuwania z potwierdzeniem
-  - [ ] Responsywność: tabela→karty na mobile, poziomy scroll jest OK
-- [ ] **Zarządzanie kategoriami** (strona lub modal):
-  - [ ] Lista kategorii
-  - [ ] Dodawanie nowej kategorii
-  - [ ] Edycja nazwy kategorii
-  - [ ] Usunięcie kategorii (ze sprawdzeniem transakcji)
+- [x] **Ekran transakcji** z:
+  - [x] Listą/tabelą transakcji
+  - [x] Polem wyszukiwania (title + notes)
+  - [x] Filtrami: kategoria, zakres dat (ten miesiąc, ostatni miesiąc, custom), zakres kwot
+  - [x] UI do tworzenia/edycji (modal, drawer lub osobna strona)
+  - [x] Przycisk usuwania z potwierdzeniem
+  - [x] Responsywność: tabela→karty na mobile, poziomy scroll jest OK
+- [x] **Zarządzanie kategoriami** (strona lub modal):
+  - [x] Lista kategorii
+  - [x] Dodawanie nowej kategorii
+  - [x] Edycja nazwy kategorii
+  - [x] Usunięcie kategorii (ze sprawdzeniem transakcji)
 - [x] **Ustawienia budżetu** (część dashboarda lub osobna strona):
   - [x] Formularz ustawienia budżetu dla wybranego miesiąca
 - [x] **Logout**
