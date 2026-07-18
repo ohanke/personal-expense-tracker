@@ -21,6 +21,41 @@ npm run test:watch
 npm test -- --coverage
 ```
 
+## Development & Debugging
+
+### Start server with debug logging enabled
+```bash
+DEBUG_LOGS=true npm start
+```
+
+This enables detailed debug logs showing:
+- **OAuth flow**: Which strategy is initiated, callback success/failure
+- **API requests**: Every endpoint call with HTTP status codes
+- **CRUD operations**: When data is created, updated, or deleted
+- **WebSocket events**: Client connect/disconnect, alert sending
+- **Validation errors**: Why requests are rejected
+- **Performance**: Request timing information
+
+**Example debug output:**
+```
+[2026-07-18T16:30:45.123Z] INFO: Server started on port 3000
+[2026-07-18T16:31:12.456Z] INFO: [AUTH] OAuth flow initiated: google
+[2026-07-18T16:31:25.789Z] INFO: [API] GET /api/categories → 200
+[2026-07-18T16:32:00.123Z] INFO: [WS] Client connected { userId: 'user...' }
+```
+
+### Code quality checks
+
+Run ESLint to check for issues:
+```bash
+npm run lint
+```
+
+Automatically fix ESLint issues:
+```bash
+npm run lint:fix
+```
+
 ## Test Structure
 
 Tests are organized in `__tests__/` directory mirroring the `src/` structure:
@@ -205,6 +240,79 @@ const app = express();
 app.use(session({...}));
 app.use(passport.initialize());
 app.use('/auth', authRouter);
+```
+
+## Application Logging
+
+The application includes comprehensive logging for monitoring and debugging. All logs are structured with timestamps and categories for easy filtering.
+
+### Log Categories
+
+**[AUTH]** - Authentication and OAuth flow
+- OAuth strategy initiation (google/github)
+- Callback success/failure with anonymized user IDs
+- Login/logout operations
+- Session errors
+
+**[API]** - HTTP request/response logging
+- Request method, path, and HTTP status code
+- Authenticated user ID (anonymized)
+- Response time information
+
+**[CRUD]** - Data operations
+- Create/Read/Update/Delete operations
+- Resource IDs and operation types
+- Data validation errors
+
+**[WS]** - WebSocket real-time events
+- Client connections/disconnections
+- Budget alert sending (threshold + percentage used)
+- Message types and communication events
+
+**[BUDGET]** - Budget-related operations
+- Budget calculations
+- Alert threshold checks
+
+### Data Privacy in Logs
+
+All sensitive data is automatically censored:
+- ✅ Emails: `u***@example.com` (shows domain, hides local part)
+- ✅ User IDs: `user...` (shows first 4 chars only)
+- ✅ OAuth tokens: Never logged
+- ✅ Session IDs: Never logged
+- ✅ Avatar URLs: Removed from logs
+
+### Log Output Format
+
+```
+[ISO-8601-TIMESTAMP] LEVEL: [CATEGORY] Message { optional: metadata }
+```
+
+Example log sequences:
+
+**OAuth flow:**
+```
+[2026-07-18T16:31:12.123Z] INFO: [AUTH] OAuth flow initiated: google
+[2026-07-18T16:31:25.456Z] INFO: [AUTH] OAuth callback success: google { userId: 'user...' }
+[2026-07-18T16:31:26.789Z] INFO: [AUTH] User logged in successfully { userId: 'user...', strategy: 'google' }
+```
+
+**API call:**
+```
+[2026-07-18T16:31:35.123Z] INFO: [API] GET /api/categories → 200 { userId: 'user...' }
+```
+
+**CRUD operation:**
+```
+[2026-07-18T16:31:42.456Z] INFO: [CRUD] CREATE Category { resourceId: 'cat-abc123', userId: 'user...' }
+[2026-07-18T16:31:42.789Z] INFO: [API] POST /api/categories → 201 { userId: 'user...' }
+```
+
+**WebSocket activity:**
+```
+[2026-07-18T16:32:00.123Z] INFO: [WS] Client connected { userId: 'user...' }
+[2026-07-18T16:32:05.456Z] INFO: [WS] Budget alert sent { userId: 'user...', threshold: 80, percentageUsed: 82 }
+[2026-07-18T16:32:10.789Z] INFO: [WS] Client disconnected { userId: 'user...' }
 ```
 
 ## Future Test Improvements
