@@ -102,10 +102,15 @@ GITHUB_CLIENT_SECRET=your-github-client-secret
 - `PUT /api/categories/:id` - Update category name
 - `DELETE /api/categories/:id` - Delete category (see deletion rules below)
 
-### Transactions (Coming soon)
-- `GET /api/transactions` - List user's transactions
+### Transactions
+- `GET /api/transactions` - List user's transactions (with filtering, searching, pagination, sorting)
+  - Query params: `limit`, `offset`, `search`, `category`, `dateFrom`, `dateTo`, `amountMin`, `amountMax`, `sortBy`, `sortOrder`
+  - Default sort: `date` descending (newest first)
 - `POST /api/transactions` - Create transaction
+  - Required: `title`, `amount`, `date`
+  - Optional: `currency` (default USD), `notes`, `category_id`
 - `PUT /api/transactions/:id` - Update transaction
+  - Same fields as POST
 - `DELETE /api/transactions/:id` - Delete transaction
 
 ## Explanation of Category Deletion Behavior
@@ -153,8 +158,8 @@ See `TESTING.md` for detailed testing documentation.
 - ✅ OAuth authentication (Google + GitHub)
 - ✅ Session management with express-session
 - ✅ Categories CRUD API
-- ✅ Comprehensive unit and integration tests
-- ⏳ Transactions CRUD API (Sprint 1)
+- ✅ Transactions CRUD API with advanced filtering/searching/pagination/sorting
+- ✅ Comprehensive unit and integration tests (105 tests passing)
 - ⏳ Budget endpoints (Sprint 2)
 - ⏳ WebSocket alerts (Sprint 2)
 - ⏳ Frontend (Sprint 3)

@@ -47,11 +47,17 @@ Current coverage status (as of Sprint 1):
 |------|-----------|----------|-----------|-------|
 | auth.js (middleware) | 100% | 100% | 100% | 100% |
 | authController.js | 90% | 75% | 100% | 90% |
+| categoryController.js | 83.05% | 84.37% | 100% | 83.05% |
+| transactionController.js | 89.14% | 83.8% | 100% | 89.06% |
+| categories.js (routes) | 100% | 100% | 100% | 100% |
+| transactions.js (routes) | 100% | 100% | 100% | 100% |
 | prisma.js | 83.33% | 100% | 83.33% | 83.33% |
 | passport.js | 26.47% | 0% | 0% | 26.47% |
 | auth.js (routes) | 40% | 0% | 0% | 40% |
 
-**Overall:** 49.45% statements, 45% functions, 49.45% lines
+**Overall:** 76.51% statements, 74.53% branches, 65.62% functions, 76.43% lines
+**Test Suites:** 9 passed, 9 total
+**Tests:** 105 passed, 105 total
 
 ## What's Tested
 
@@ -65,6 +71,45 @@ Current coverage status (as of Sprint 1):
 - `getUser` handles missing avatar URLs
 - `logout` calls passport logout callback
 - `logout` error handling with 500 status
+
+### ✅ Category Controller - `categoryController.test.js`
+- Get empty list when user has no categories
+- Get list of user's categories with filtering
+- Create category with validation (name length, uniqueness)
+- Update category name with ownership verification
+- Delete empty categories
+- Reject deletion if category has transactions (409 Conflict)
+
+### ✅ Category Routes Integration - `routes/categories.test.js`
+- Authentication enforcement on all endpoints (401)
+- Full CRUD operations with proper status codes
+- Category ownership verification (403 Unauthorized)
+- Pagination support
+- Error handling
+
+### ✅ Transaction Controller - `transactionController.test.js`
+- Get transactions with pagination and filtering
+- Advanced search: case-insensitive partial match on title/notes
+- Filter by category, date range, amount range
+- Default sorting by date descending (newest first)
+- Sorting by amount, title, date with asc/desc order
+- Create transaction with full validation:
+  - Amount > 0
+  - Date not in future
+  - Title non-empty (max 255 chars)
+  - Currency ISO 4217 or default USD
+  - Category ownership verification
+- Update transaction with same validations
+- Delete transaction with ownership check
+
+### ✅ Transaction Routes Integration - `routes/transactions.test.js`
+- Authentication enforcement on all endpoints (401)
+- Full CRUD operations with proper status codes (201, 200, 404, 403, 400, 409)
+- Advanced filtering: search, category, date range, amount range
+- Pagination with limit/offset and hasMore flag
+- Sorting parameter handling
+- Comprehensive validation error responses
+- Transaction ownership verification (403 Unauthorized)
 
 ### ✅ Prisma Utility - `prisma.test.js`
 - Mock fallback client initialization when Prisma fails
@@ -125,18 +170,7 @@ app.use('/auth', authRouter);
 
 For Sprint 2 and beyond, add tests for:
 
-1. **Categories CRUD** (`src/routes/categories.js`)
-   - Create category
-   - List user's categories
-   - Update category
-   - Delete category (with transaction validation)
-
-2. **Transactions CRUD** (`src/routes/transactions.js`)
-   - Create transaction with validation
-   - Filtering and pagination
-   - Transaction updates and deletions
-
-3. **Budget Endpoints**
+1. **Budget Endpoints**
    - Set monthly budget
    - Fetch budget summary
    - Calculate spending vs budget

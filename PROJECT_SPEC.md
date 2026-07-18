@@ -129,19 +129,20 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
 - [x] Walidacja: nazwa unikalna na użytkownika
 - [x] Autoryzacja: każdy endpoint musi sprawdzać czy user jest właścicielem kategorii
 
-### CRUD Transakcji
-- [ ] GET /api/transactions - lista transakcji użytkownika (z paginacją)
-- [ ] GET /api/transactions?search=&category=&dateFrom=&dateTo=&amountMin=&amountMax= - wyszukiwanie i filtrowanie
-- [ ] POST /api/transactions - utworzenie transakcji
-- [ ] PUT /api/transactions/:id - edycja transakcji (wszystkie pola)
-- [ ] DELETE /api/transactions/:id - usunięcie transakcji
-- [ ] **Walidacja**:
-  - [ ] Amount > 0
-  - [ ] Transaction date - valid date (nie w przyszłości)
-  - [ ] Title - non-empty
-  - [ ] Currency - ISO 4217 (lub domyślnie USD)
-- [ ] **Autoryzacja**: każdy endpoint musi sprawdzać czy user jest właścicielem transakcji
-- [ ] **Alerty WebSocket**: Po create/update/delete wysłać alert budżetowy jeśli zmieniony procent zużycia
+### CRUD Transakcji ✅ SPRINT 1
+- [x] GET /api/transactions - lista transakcji użytkownika (z paginacją)
+- [x] GET /api/transactions?search=&category=&dateFrom=&dateTo=&amountMin=&amountMax= - wyszukiwanie i filtrowanie
+- [x] POST /api/transactions - utworzenie transakcji
+- [x] PUT /api/transactions/:id - edycja transakcji (wszystkie pola)
+- [x] DELETE /api/transactions/:id - usunięcie transakcji
+- [x] **Walidacja**:
+  - [x] Amount > 0
+  - [x] Transaction date - valid date (nie w przyszłości)
+  - [x] Title - non-empty
+  - [x] Currency - ISO 4217 (lub domyślnie USD)
+- [x] **Autoryzacja**: każdy endpoint musi sprawdzać czy user jest właścicielem transakcji
+- [x] **Sortowanie**: sortBy (date/amount/title), sortOrder (asc/desc), domyślnie date DESC
+- [ ] **Alerty WebSocket**: Po create/update/delete wysłać alert budżetowy jeśli zmieniony procent zużycia (SPRINT 2)
 
 ### Budżet miesięczny
 - [ ] GET /api/budgets/:month - pobranie budżetu na dany miesiąc

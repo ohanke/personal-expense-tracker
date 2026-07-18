@@ -46,12 +46,12 @@ model Transaction {
   date        DateTime
   notes       String?
   user_id     String
-  category_id String
+  category_id String?
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
 
   user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  category  Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  category  Category? @relation(fields: [category_id], references: [id], onDelete: SetNull)
 
   @@index([user_id])
   @@index([category_id])
