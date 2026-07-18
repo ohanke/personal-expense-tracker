@@ -35,3 +35,12 @@ export const authAPI = {
     window.location.href = `${API_BASE}/auth/github`;
   },
 };
+
+export const budgetAPI = {
+  getBudgetSummary: (month) => request(`/api/budgets/${month}/summary`),
+  setBudget: (month, amount) =>
+    request('/api/budgets', {
+      method: 'POST',
+      body: JSON.stringify({ month, amount }),
+    }),
+};

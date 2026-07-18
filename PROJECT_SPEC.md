@@ -190,12 +190,12 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
 - [x] **Ekran logowania** z opcjami:
   - [x] Continue with Google
   - [x] Continue with GitHub
-- [ ] **Dashboard główny** (po zalogowaniu) - pokazuje wybrany miesiąc:
-  - [ ] Całkowita suma wydatków w miesiącu
-  - [ ] Kwota budżetu miesięcznego
-  - [ ] Pozostały budżet (budget - spent)
-  - [ ] Procent zużycia budżetu (visual progress bar)
-  - [ ] Stan "Brak ustawionego budżetu" zamiast mylących liczb
+- [x] **Dashboard główny** (po zalogowaniu) - pokazuje wybrany miesiąc:
+  - [x] Całkowita suma wydatków w miesiącu
+  - [x] Kwota budżetu miesięcznego
+  - [x] Pozostały budżet (budget - spent)
+  - [x] Procent zużycia budżetu (visual progress bar)
+  - [x] Stan "Brak ustawionego budżetu" zamiast mylących liczb
   - [ ] Lista ostatnich transakcji
   - [ ] Widoczne alerty budżetowe (toast/banner/panel)
 - [ ] **Ekran transakcji** z:
@@ -210,8 +210,8 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
   - [ ] Dodawanie nowej kategorii
   - [ ] Edycja nazwy kategorii
   - [ ] Usunięcie kategorii (ze sprawdzeniem transakcji)
-- [ ] **Ustawienia budżetu** (część dashboarda lub osobna strona):
-  - [ ] Formularz ustawienia budżetu dla wybranego miesiąca
+- [x] **Ustawienia budżetu** (część dashboarda lub osobna strona):
+  - [x] Formularz ustawienia budżetu dla wybranego miesiąca
 - [x] **Logout**
 - [ ] **UI Requirements - Modern, Styled, Responsive**:
   - [ ] Spójne spacing i typografia
