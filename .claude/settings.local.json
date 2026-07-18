@@ -4,7 +4,13 @@
       "Bash(mkdir -p backend)",
       "Bash(npm init *)",
       "Bash(npm install *)",
-      "Bash(npx prisma *)"
+      "Bash(npx prisma *)",
+      "Bash(node *)",
+      "Bash(timeout 5 npm start)",
+      "Bash(grep -E \"\\\\.js$|\\\\.ts$\")",
+      "Bash(npm uninstall *)",
+      "Bash(npm rebuild *)",
+      "Bash(grep -E \"\\\\.\\(js|env|json\\)$\")"
     ]
   }
 }

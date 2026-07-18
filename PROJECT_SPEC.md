@@ -104,18 +104,20 @@ Informuję użytkownika o zakończeniu zadania **DOPIERO WTEDY** gdy:
 - [x] Model **Budget** (amount, month, user_id - jeden budżet na miesiąc)
 - [x] Kaskadowne usuwanie (user → cascade delete)
 
-### Autentykacja (OAuth) - SSO Only
-- [ ] Integracja Passport.js z Google OAuth / OpenID Connect
-- [ ] Integracja Passport.js z GitHub OAuth
-- [ ] Support dla logowania - Google i GitHub
-- [ ] Support dla wylogowania
-- [ ] Autentykacja persystuje across page refresh (sesja/token)
-- [ ] Tworzenie lokalnego rekordu User przy pierwszym logowaniu
-- [ ] Przechowywanie minimum: provider, provider_user_id, email (jeśli dostępny), display_name, avatar_url (optional)
-- [ ] Obsługa sesji użytkownika
-- [ ] Middleware autoryzacji (sprawdzenie czy user jest zalogowany)
-- [ ] Account linking między Google i GitHub nie jest wymagane (mogą być oddzielne konta)
-- [ ] Bezpieczna implementacja Google i GitHub SSO
+### Autentykacja (OAuth) - SSO Only ✅ SPRINT 1
+- [x] Integracja Passport.js z Google OAuth / OpenID Connect
+- [x] Integracja Passport.js z GitHub OAuth
+- [x] Support dla logowania - Google i GitHub
+- [x] Support dla wylogowania
+- [x] Autentykacja persystuje across page refresh (sesja/token)
+- [x] Tworzenie lokalnego rekordu User przy pierwszym logowaniu
+- [x] Przechowywanie minimum: provider, provider_user_id, email (jeśli dostępny), display_name, avatar_url (optional)
+- [x] Obsługa sesji użytkownika (express-session + cookies)
+- [x] Middleware autoryzacji (sprawdzenie czy user jest zalogowany)
+- [x] GET /auth/me endpoint (zwraca dane zalogowanego usera)
+- [x] POST /auth/logout endpoint
+- [x] Account linking między Google i GitHub nie jest wymagane (mogą być oddzielne konta)
+- [x] Bezpieczna implementacja Google i GitHub SSO
 
 ### CRUD Kategorii
 - [ ] GET /api/categories - lista kategorii użytkownika
