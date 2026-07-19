@@ -73,8 +73,8 @@ const getTransactions = async (req, res) => {
 
     if (search && search.trim()) {
       where.OR = [
-        { title: { contains: search.trim(), mode: 'insensitive' } },
-        { notes: { contains: search.trim(), mode: 'insensitive' } },
+        { title: { contains: search.trim() } },
+        { notes: { contains: search.trim() } },
       ];
     }
 
