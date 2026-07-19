@@ -22,7 +22,7 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [refreshTrigger]);
 
   useEffect(() => {
     setOffset(0);
@@ -146,7 +146,7 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 bg-white p-4 rounded-lg border border-slate-200">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
         <div>
           <label className="block text-xs font-medium text-slate-700 mb-1">Search</label>
           <input
@@ -208,7 +208,7 @@ export default function TransactionList({ month, onEdit, onRefreshBudget, refres
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white p-4 rounded-lg border border-slate-200">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
         <div>
           <label className="block text-xs font-medium text-slate-700 mb-1">Min Amount</label>
           <input
