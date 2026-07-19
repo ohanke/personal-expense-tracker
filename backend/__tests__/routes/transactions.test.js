@@ -129,8 +129,8 @@ describe('Transactions Routes', () => {
           where: expect.objectContaining({
             user_id: 'user-123',
             OR: expect.arrayContaining([
-              expect.objectContaining({ title: { contains: 'grocery', mode: 'insensitive' } }),
-              expect.objectContaining({ notes: { contains: 'grocery', mode: 'insensitive' } }),
+              expect.objectContaining({ title: { contains: 'grocery' } }),
+              expect.objectContaining({ notes: { contains: 'grocery' } }),
             ]),
           }),
         })

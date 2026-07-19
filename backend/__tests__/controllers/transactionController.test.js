@@ -93,14 +93,15 @@ describe('Transaction Controller', () => {
       await getTransactions(req, res);
 
       expect(prisma.transaction.findMany).toHaveBeenCalledWith(
-        expect.objectContaining({
-          where: expect.objectContaining({
-            user_id: 'user-123',
-            OR: expect.arrayContaining([
-              expect.objectContaining({ title: { contains: 'grocery', mode: 'insensitive' } }),
-            ]),
-          }),
-        })
+          expect.objectContaining({
+            where: expect.objectContaining({
+              user_id: 'user-123',
+              OR: expect.arrayContaining([
+                expect.objectContaining({ title: { contains: 'grocery' } }),
+                expect.objectContaining({ notes: { contains: 'grocery' } })
+              ]),
+            }),
+          })
       );
     });
 
