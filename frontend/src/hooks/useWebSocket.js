@@ -17,7 +17,9 @@ export function useWebSocket() {
 
     const connectWebSocket = () => {
       try {
-        const ws = new WebSocket('ws://localhost:3000');
+        // Zmiana: dodajemy identyfikator użytkownika, aby backend autoryzował połączenie
+        const userId = user.id || user.userId;
+        const ws = new WebSocket(`ws://localhost:3000?userId=${userId}`);
 
         ws.onopen = () => {
           console.log('WebSocket connected');
@@ -28,7 +30,7 @@ export function useWebSocket() {
             const data = JSON.parse(event.data);
 
             if (data.type === 'budget_alert') {
-              const { threshold, percentageUsed, budgetAmount, month } = data;
+              const { threshold, percentageUsed, budgetAmount } = data;
 
               const thresholdLabel = `${threshold}%`;
               const message = `⚠️ Budget Alert: You've reached ${thresholdLabel} of your budget (${percentageUsed}% used - $${budgetAmount} limit)`;

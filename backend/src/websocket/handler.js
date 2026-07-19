@@ -35,7 +35,9 @@ const setupWebSocketServer = (server) => {
   });
 
   wss.on('connection', async (ws, request) => {
-    const userId = request.session?.passport?.user || null;
+    // Odczytujemy userId z parametrów URL, które wysłał nasz frontend
+    const url = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
+    const userId = request.session?.passport?.user || url.searchParams.get('userId');
 
     if (!userId) {
       logger.warn('[WS] Connection rejected: no userId');
