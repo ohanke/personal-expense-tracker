@@ -223,18 +223,56 @@ export default function Dashboard() {
             </div>
         ) : (
             <div className="w-full bg-white rounded-3xl shadow-sm border border-slate-200 p-12 text-center">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">
-                No Budget Set
-              </h3>
-              <p className="text-slate-500 mb-8 font-medium">
-                Set up a budget to start tracking your expenses.
-              </p>
-              <button
-                  onClick={() => setShowBudgetForm(true)}
-                  className="px-6 py-3 bg-slate-800 text-white rounded-xl font-semibold hover:bg-slate-700 transition-all"
-              >
-                Set Budget Now
-              </button>
+              {showBudgetForm ? (
+                  <form onSubmit={handleSetBudget} className="max-w-md mx-auto space-y-4">
+                    <h3 className="text-xl font-bold text-slate-900 mb-4">
+                      Set Budget for {formatMonth(currentMonth)}
+                    </h3>
+                    <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={formAmount}
+                        onChange={(e) => setFormAmount(e.target.value)}
+                        placeholder="Enter amount"
+                        className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-slate-900 font-medium focus:border-slate-800 focus:outline-none transition-colors text-center"
+                        autoFocus
+                    />
+                    <div className="flex gap-3">
+                      <button
+                          type="submit"
+                          className="flex-1 px-4 py-3 bg-slate-800 text-white rounded-xl font-semibold hover:bg-slate-700 transition-all"
+                      >
+                        Save Budget
+                      </button>
+                      <button
+                          type="button"
+                          onClick={() => {
+                            setShowBudgetForm(false);
+                            setFormAmount('');
+                          }}
+                          className="flex-1 px-4 py-3 bg-white border-2 border-slate-200 text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition-all"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+              ) : (
+                  <>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">
+                      No Budget Set
+                    </h3>
+                    <p className="text-slate-500 mb-8 font-medium">
+                      Set up a budget to start tracking your expenses.
+                    </p>
+                    <button
+                        onClick={() => setShowBudgetForm(true)}
+                        className="px-6 py-3 bg-slate-800 text-white rounded-xl font-semibold hover:bg-slate-700 transition-all"
+                    >
+                      Set Budget Now
+                    </button>
+                  </>
+              )}
             </div>
         )}
 
